@@ -24,6 +24,9 @@ public class AbstractController {
 	protected Integer getUserId() {
 		return getUser().getId();
 	}
+
+
+
     /**
      * Gets request.
      *

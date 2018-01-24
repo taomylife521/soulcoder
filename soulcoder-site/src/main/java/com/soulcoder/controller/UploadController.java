@@ -5,6 +5,7 @@
 package com.soulcoder.controller;
 
 import com.soulcoder.common.utils.ValidatorUtils;
+import com.soulcoder.enums.ResponseStatus;
 import com.soulcoder.requestdto.Req_Upload;
 import com.soulcoder.responsedto.R;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class UploadController extends AbstractController {
     public R upload(Req_Upload request)
     {
         R res = ValidatorUtils.validateEntity((request));
-        if(res.getStatus() =="0"){
+        if(res.getStatus() != ResponseStatus.Success.getIndex()){
             return res;
         }
         return R.ok();

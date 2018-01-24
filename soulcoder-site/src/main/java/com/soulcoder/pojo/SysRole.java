@@ -17,7 +17,34 @@ public class SysRole extends  BaseEntity {
 
     private Integer deptid;
 
+    public Integer getDeptid() {
+        return deptid;
+    }
+
+    public void setDeptid(Integer deptid) {
+        this.deptid = deptid;
+    }
+
+    public String getDeptname() {
+        return deptname;
+    }
+
+    public void setDeptname(String deptname) {
+        this.deptname = deptname;
+    }
+
+    public Integer getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(Integer createby) {
+        this.createby = createby;
+    }
+
+    private String deptname;
+
     private Date createtime;
+    private Integer createby;
 
 
 

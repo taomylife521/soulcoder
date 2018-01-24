@@ -2,6 +2,7 @@ package com.soulcoder.controller;
 
 import com.soulcoder.common.utils.EntityToMapUtils;
 import com.soulcoder.common.utils.ValidatorUtils;
+import com.soulcoder.enums.ResponseStatus;
 import com.soulcoder.partener.shiro.ShiroUtils;
 import com.soulcoder.pojo.SysUser;
 import com.soulcoder.requestdto.Req_AddUser;
@@ -51,7 +52,7 @@ public class UserController extends AbstractController {
 //		}
 		//校验实体
 		R res=ValidatorUtils.validateEntity(request);
-		if(res.getStatus() == "0")
+		if(res.getStatus() != ResponseStatus.Success.getIndex())
 		{
 			return res;
 		}

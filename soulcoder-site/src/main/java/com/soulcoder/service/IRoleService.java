@@ -1,30 +1,14 @@
 package com.soulcoder.service;
 
-import com.soulcoder.requestdto.Req_RoleList;
-import com.soulcoder.responsedto.Res_RoleList;
+import com.soulcoder.pojo.SysRole;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * The interface Role service.
  */
 public interface IRoleService {
-    /**
-     * Correlation permissions.
-     *
-     * @param roleId        the role id
-     * @param permissionIds the permission ids
-     */
-//根据角色id分配权限
-    public void correlationPermissions(Long roleId, Long... permissionIds);
-
-    /**
-     * Uncorrelation permissions.
-     *
-     * @param roleId        the role id
-     * @param permissionIds the permission ids
-     */
-//解除角色id对应的权限
-    public void uncorrelationPermissions(Long roleId, Long... permissionIds);//
-
 
     /**
     * @Author:Aministrator
@@ -33,5 +17,5 @@ public interface IRoleService {
     * @param
     * @return
     */
-    public Res_RoleList queryList(Req_RoleList request);
+    public List<SysRole> queryList(Map<String,Object> map);
 }

@@ -11,7 +11,7 @@ public class Constant {
     public static final Integer SUPER_ADMIN=1;
 
     public enum MenuType{
-        //鐩綍
+        //菜单类型
         CATALOG(0),
         MENU(1),
         BUTTON(2);

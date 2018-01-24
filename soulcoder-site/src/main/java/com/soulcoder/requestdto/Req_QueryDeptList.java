@@ -11,12 +11,13 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class Req_QueryDeptList extends  RequestBase {
 
-    public String getDeptName() {
-        return deptName;
+
+    public Integer getDeptId() {
+        return deptId;
     }
 
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     /**
@@ -26,7 +27,8 @@ public class Req_QueryDeptList extends  RequestBase {
     * @param
     * @return
     */
-    @JSONField(name="deptname")
-    private String deptName="";
+    @JSONField(name="deptid")
+    private Integer deptId=-1;
+
 
 }

@@ -29,7 +29,8 @@ public class Req_RoleList extends RequestBase {
     * @return
     */
     @JSONField(name="deptid")
-    private Integer deptId;
+    private Integer deptId=-1;
+
 
     public String getRoleName() {
         return roleName;

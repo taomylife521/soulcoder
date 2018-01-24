@@ -4,14 +4,14 @@
 
 package com.soulcoder.service.impl;
 
-import com.soulcoder.common.utils.EntityToMapUtils;
+import com.soulcoder.common.annotation.DataFilter;
 import com.soulcoder.dao.SysRoleDao;
-import com.soulcoder.requestdto.Req_RoleList;
-import com.soulcoder.responsedto.Res_RoleList;
+import com.soulcoder.pojo.SysRole;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,9 +30,10 @@ public class RoleServiceImpl implements IRoleService {
 
     }
 
-    public Res_RoleList queryList(Req_RoleList request) {
-        Map<String,Object> map= EntityToMapUtils.convertToMap(request);
-
-        return null;
+    @DataFilter(tableAlias = "r", user = false)
+    public List<SysRole> queryList(Map<String, Object> map) {
+        return roleDao.queryList(map);
     }
+
+
 }

@@ -11,10 +11,6 @@ import com.soulcoder.enums.ResponseStatus;
 public  class R  {
 
 
-	public  String getStatus() {
-		return status;
-	}
-
 
 
 	/**
@@ -27,9 +23,10 @@ public  class R  {
     public   static R ok(ResponseBase datas)
 	{
 		R r=new R();
-		r.status=String.valueOf(ResponseStatus.Success.ordinal());
+		r.status=ResponseStatus.Success.ordinal();
 		r.errormsg="";
 		r.data=datas;
+
 		return r;
 	}
 private  R(){}
@@ -53,7 +50,7 @@ private  R(){}
 	public static R failed(String errMsg)
 	{
 		R r=new R();
-		r.status=String.valueOf(ResponseStatus.Failed.getIndex());
+		r.status=ResponseStatus.Failed.getIndex();
 		r.errormsg=errMsg;
 		r.data=null;
 		return r;
@@ -69,7 +66,7 @@ private  R(){}
     public static R failed(String errMsg,ResponseBase datax)
 	{
 		R r=new R();
-		r.status=String.valueOf(ResponseStatus.Failed.getIndex());
+		r.status=ResponseStatus.Failed.getIndex();
 		r.errormsg=errMsg;
 		r.data=datax;
 		return r;
@@ -89,7 +86,7 @@ private  R(){}
     public static R exception(String errMsg,Exception exs,ResponseBase datas)
 	{
 		R r=new R();
-		r.status=String.valueOf(ResponseStatus.Failed.getIndex());
+		r.status=ResponseStatus.Failed.getIndex();
 		r.errormsg=errMsg;
 		r.data=datas;
 		r.ex=exs;
@@ -119,12 +116,49 @@ private  R(){}
 	{
 		 return exception(ex.getMessage(), ex,null);
 	}
-private static final long serialVersionUID = 1L;
+private  transient final long serialVersionUID = 1L;
 	
-	private static String status=String.valueOf(ResponseStatus.Success.getIndex());
-	private static String errormsg="";
-	private static ResponseBase data;
-	private static transient Exception ex=null;
+	private  int status=ResponseStatus.Success.getIndex();
+	private  String errormsg="";
+	private  ResponseBase data;
+
+	public long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getErrormsg() {
+		return errormsg;
+	}
+
+	public void setErrormsg(String errormsg) {
+		this.errormsg = errormsg;
+	}
+
+	public ResponseBase getData() {
+		return data;
+	}
+
+	public void setData(ResponseBase data) {
+		this.data = data;
+	}
+
+	public Exception getEx() {
+		return ex;
+	}
+
+	public void setEx(Exception ex) {
+		this.ex = ex;
+	}
+
+	private  transient Exception ex=null;
 }
 
 

@@ -5,8 +5,7 @@
  */
 Vue.config.devtools = true;
 
-/*ztree的设置*/
-var ztree;
+
 //部门树设置
 var deptTreeSettings = {
     view: {

@@ -7,7 +7,8 @@
  */
 var tbl;//table对象
 var aoData;//提交服务端数据
-
+/*ztree的设置*/
+var ztree;
 
 // $(document).ready(function(){
 //    initTable();

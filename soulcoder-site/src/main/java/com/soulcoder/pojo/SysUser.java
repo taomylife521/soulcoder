@@ -24,6 +24,8 @@ public class SysUser extends BaseEntity {
     private Integer sex;
     private Date bithday;
 
+    private Integer createby;
+
     private transient Integer isdel;
 
 

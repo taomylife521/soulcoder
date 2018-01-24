@@ -127,37 +127,53 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>出生日期</label>
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="text" class="form-control"  data-format="yyyy-mm-dd" id="datepicker" placeholder="出生日期">
-                        </div>
+                        <label>手机号</label>
+                        <input type="text" class="form-control"  placeholder="手机号">
                     </div>
+
 
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>手机号</label>
-                        <input type="text" class="form-control"  placeholder="手机号">
-                    </div>
-                </div>
-
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>部门</label>
                         <input type="text" class="form-control" data-toggle="modal" data-target="#myModal"  v-model="deptName" :deptId="deptId"  placeholder="部门">
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>角色</label>
+                        <input type="text" class="form-control" data-toggle="modal" data-target="#myModal"  v-model="deptName" :deptId="deptId"  placeholder="部门">
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>出生日期</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" class="form-control"  data-format="yyyy-mm-dd" id="datepicker" placeholder="出生日期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>QQ</label>
+                        <input type="text" class="form-control"   v-model="deptName" :deptId="deptId"  placeholder="QQ">
+                    </div>
+                    <div class="form-group">
+                        <label>微信号</label>
+                        <input type="text" class="form-control"   v-model="deptName" :deptId="deptId"  placeholder="QQ">
+                    </div>
+                </div>
                 <div class="col-md-4 center">
                 <div class="form-group ">
                     <div class="file-loading" >
-                        <input id="btnUploadImage" class="file" type="file" multiple data-preview-file-type="any" data-upload-url="#">
+                        <input id="btnUploadImage" class="file" type="file" >
                     </div>
                 </div>
                 </div>
@@ -208,4 +224,4 @@
 <script src="${path}/statics/adminlte/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/bootstrap-fileinput/js/zh.js"></script>
 
-<script src="${path}/statics/js/sys/adduser.js"></script>
+<script src="${path}/statics/js/sys/adduser.js?time=New Date()"></script>

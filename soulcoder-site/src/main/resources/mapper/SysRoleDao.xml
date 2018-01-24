@@ -8,7 +8,20 @@
 <mapper namespace="com.soulcoder.dao.SysRoleDao">
 
     <select id ="queryList" resultType="com.soulcoder.pojo.SysRole">
-        select * from sys_menu where isdel=0;
+        select * from sys_role
+        <where>
+            isdel=0
+            <if test="roleName!=null">
+                rolename=#{roleName}
+            </if>
+            <if test="deptId>0">
+                deptid=#{deptId}
+            </if>
+
+            <!--  数据过滤  -->
+            ${filterSql}
+        </where>
+
     </select>
 
 
