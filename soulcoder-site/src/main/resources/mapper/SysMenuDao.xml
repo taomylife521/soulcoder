@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.soulcoder.dao.SysMenuDao">
+
+<select id ="queryList" resultType="com.soulcoder.pojo.SysMenu">
+    select * from sys_menu where isdel=0;
+</select>
+
+    <select id="queryListByParentId" resultType="com.soulcoder.pojo.SysMenu">
+        select * from sys_menu where isdel=0 and parentid=#{parentId}
+    </select>
+
+
+
+</mapper>

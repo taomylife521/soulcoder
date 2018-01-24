@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    ">
+   
+   
+     <!-- 缂傛挸鐡ㄧ粻锛勬倞閸ｏ拷 -->  
+    <!-- <bean id="cacheManager" class="com.shiro.spring.cache.SpringCacheManagerWrapper">  
+        <property name="cacheManager" ref="springCacheManager"/>  
+    </bean>   -->
+    <!-- 閸戭叀鐦夐崠褰掑帳閸ｏ拷 -->  
+    <!-- <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.SimpleCredentialsMatcher">  
+        <property name="hashAlgorithmName" value="md5"/>  
+        <property name="hashIterations" value="2"/>  
+        <property name="storedCredentialsHexEncoded" value="true"/>  
+    </bean>   -->
+    
+   <!-- 娴兼俺鐦絀D閻㈢喐鍨氶崳锟�  
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>  
+    娴兼俺鐦紺ookie濡剝婢� maxAge=-1鐞涖劎銇氬ù蹇氼潔閸ｃ劌鍙ч梻顓熸婢惰鲸鏅ュ顥﹐okie  
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <constructor-arg value="sid"/>  
+        <property name="httpOnly" value="true"/>  
+        <property name="maxAge" value="-1"/>  
+    </bean>  
+    娴兼俺鐦紻AO  
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">  
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>  
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>  
+    </bean>  
+    
+     娴兼俺鐦芥宀冪槈鐠嬪啫瀹抽崳锟�  
+    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">  
+        <property name="sessionValidationInterval" value="1800000"/>  
+        <property name="sessionManager" ref="sessionManager"/>  
+    </bean>  
+    娴兼俺鐦界粻锛勬倞閸ｏ拷 
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
+        <property name="globalSessionTimeout" value="1800000"/>  
+        <property name="deleteInvalidSessions" value="true"/>  
+        <property name="sessionValidationSchedulerEnabled" value="true"/>  
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>  
+        <property name="sessionDAO" ref="sessionDAO"/>  
+        <property name="sessionIdCookieEnabled" value="true"/>  
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>  
+    </bean>   --> 
+    
+     <!-- Realm实现 -->
+	 <bean id="myRealm" class="com.soulcoder.partener.shiro.CustomRealm">
+	   <!--  <property name="credentialsMatcher" ref="credentialsMatcher"/> -->  
+        <property name="cachingEnabled" value="false"/>  
+	 </bean>
+	 
+
+	<!-- 安全管理器-->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+	    <property name="realm" ref="myRealm"/>  
+	</bean> 
+	
+
+<!-- Shiro的Web过滤器 -->
+<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <property name="securityManager" ref="securityManager"/>
+    <property name="loginUrl" value="/login"/>
+    <property name="successUrl" value="/sys/index"/>
+    <property name="unauthorizedUrl" value="/unauthor"/>
+
+</bean>  
+  
+		  <!-- Shiro生命周期处理器 -->
+		<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+		  
+
+		  
+		<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>  
+	  <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"/>
+	  </bean>
+</beans>

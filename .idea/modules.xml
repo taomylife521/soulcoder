@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/soulcoder.iml" filepath="$PROJECT_DIR$/soulcoder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/soulcoder-api/soulcoder-api.iml" filepath="$PROJECT_DIR$/soulcoder-api/soulcoder-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/soulcoder-site/soulcoder-site.iml" filepath="$PROJECT_DIR$/soulcoder-site/soulcoder-site.iml" />
+    </modules>
+  </component>
+</project>

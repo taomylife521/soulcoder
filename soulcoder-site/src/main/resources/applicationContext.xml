@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+ 
+    <context:annotation-config />
+    <context:component-scan base-package="com.soulcoder.controller" />
+ 
+    <!-- 鐎电厧鍙嗛弫鐗堝祦鎼存捇鍘ょ純顔芥瀮娴狅拷 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 闁板秶鐤嗛弫鐗堝祦鎼存捁绻涢幒銉︾潨 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 閸╃儤婀扮仦鐐达拷锟� url閵嗕菇ser閵嗕垢assword -->
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+ 
+        <!-- 闁板秶鐤嗛崚婵嗩潗閸栨牕銇囩亸蹇嬶拷浣规付鐏忓繈锟戒焦娓舵径锟� -->
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" />
+        <property name="maxActive" value="20" />
+ 
+        <!-- 闁板秶鐤嗛懢宄板絿鏉╃偞甯寸粵澶婄窡鐡掑懏妞傞惃鍕闂傦拷 -->
+        <property name="maxWait" value="60000" />
+ 
+        <!-- 闁板秶鐤嗛梻鎾婢舵矮绠欓幍宥堢箻鐞涘奔绔村▎鈩冾梾濞村绱濆Λ锟藉ù瀣付鐟曚礁鍙ч梻顓犳畱缁屾椽妫芥潻鐐村复閿涘苯宕熸担宥嗘Ц濮ｎ偆顫� -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+ 
+        <!-- 闁板秶鐤嗘稉锟芥稉顏囩箾閹恒儱婀Ч鐘辫厬閺堬拷鐏忓繒鏁撶�涙娈戦弮鍫曟？閿涘苯宕熸担宥嗘Ц濮ｎ偆顫� -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+ 
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+ 
+        <!-- 閹垫挸绱慞SCache閿涘苯鑻熸稉鏃�瀵氱�规碍鐦℃稉顏囩箾閹恒儰绗侾SCache閻ㄥ嫬銇囩亸锟� -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="20" />
+    </bean>
+ 
+    <!--Mybatis閻ㄥ嚪essionFactory闁板秶鐤�-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="typeAliasesPackage" value="com.soulcoder.pojo" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!--閸掑棝銆夐幓鎺嶆閿涘瞼娲伴崜宥呭帥濞夈劑鍣撮敍灞芥倵闂堛垽鍣搁弸鍕畱閺冭泛锟芥瑦澧犳导姘▏閻拷
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        -->
+    </bean>
+ 
+    <!--Mybatis閻ㄥ嚜apper閺傚洣娆㈢拠鍡楀焼-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.soulcoder.mapper"/>
+    </bean>
+    
+      
+ 
+</beans>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="soulcoder-api:war">
+    <output-path>$PROJECT_DIR$/soulcoder-api/target</output-path>
+    <root id="archive" name="soulcoder-api.war">
+      <element id="artifact" artifact-name="soulcoder-api:war exploded" />
+    </root>
+  </artifact>
+</component>

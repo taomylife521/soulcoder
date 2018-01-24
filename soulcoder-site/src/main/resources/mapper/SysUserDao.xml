@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.soulcoder.dao.SysUserDao">
+
+<select id ="queryList" resultType="com.soulcoder.pojo.SysUser">
+	select u.*,(select d.`name` from sys_dept as d where isdel=0 and d.id=u.deptid) as deptName from sys_user as u
+<where>
+	u.isdel=0
+	<if test="userCreateTimeMin != null">
+	and u.createtime &gt; #{userCreateTimeMin}
+	</if>
+	<if test="userCreateTimeMax != null">
+		and u.createtime &lt; #{userCreateTimeMax}
+	</if>
+	<if test="mobile != null and mobile.trim() !='' ">
+		and u.mobile like concat('%',#{mobile},'%')
+	</if>
+	<if test="email != null and email.trim() !=''">
+		and u.email = #{email}
+	</if>
+	<if test="realname != null and realname.trim() != ''">
+		and u.realName like concat('%',#{realname},'%')
+	</if>
+	<if test="deptid != null and deptid.trim() !=''">
+		and (u.deptid =#{deptid} or (u.deptid in(select id from sys_dept where parentid=#{deptid})))
+	</if>
+	<!--数据过滤-->
+	${filterSql}
+</where>
+
+	<choose>
+		<when test="orderby !=null and orderby.trim()!=''">
+			ORDER  by #{orderby}
+		</when>
+		<otherwise>
+			ORDER  by u.id desc
+		</otherwise>
+	</choose>
+
+	<if test="offset !=null and limit !=null">
+		limit #{offset},#{limit}
+	</if>
+</select>
+
+	<select id="queryTotal" resultType="int">
+		select count(*) from sys_user as u
+		<where>
+			u.isdel=0
+			<if test="userCreateTimeMin != null and userCreateTimeMin.trim() !=''">
+				and u.createtime &gt; #{userCreateTimeMin}
+			</if>
+			<if test="userCreateTimeMax != null and userCreateTimeMax.trim() !=''">
+				and u.createtime &lt; #{userCreateTimeMax}
+			</if>
+			<if test="mobile != null and mobile.trim() !=''">
+				and u.mobile like concat('%',#{mobile},'%')
+			</if>
+			<if test="email != null and email.trim() !=''">
+				and u.email = #{email}
+			</if>
+			<if test="realname != null and realname.trim() !=''">
+				and u.realName like concat('%',#{realname},'%')
+			</if>
+			<if test="deptid != null and deptid.trim() !=''">
+				and (u.deptid =#{deptid} or (u.deptid in(select id from sys_dept where parentid=#{deptid})))
+			</if>
+
+			<!--数据过滤-->
+			${filterSql}
+		</where>
+	</select>
+
+<select id="queryByUsername" resultType="com.soulcoder.pojo.SysUser">
+	select * from sys_user  where username = #{username} and isdel=0
+	
+</select>
+
+	<select id="queryMenuIdListByUserId" resultType="int">
+		select DISTINCT menuid from sys_user_role ur INNER JOIN sys_role_menu rm on ur.roleid =rm.roleid
+		where ur.userid=#{userId} and ur.isdel=0
+	</select>
+
+	<update id="updatePassword" parameterType="map">
+			update sys_user set `password` = #{newPassword} where id= #{userId} and password=#{password}
+	</update>
+
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018.所有代码版权归编码者所有!
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soulcoder.dao.SysDeptDao">
+    <select id="getSubDeptIdList" resultType="int">
+        select id from sys_dept where isdel=0 and parentid=#{deptid}
+    </select>
+
+    <select id="queryList" resultType="com.soulcoder.pojo.SysDept" parameterType="map">
+        select *,(select p.name from sys_dept p where p.id = d.parentid) as parentname from sys_dept d
+        <where>
+            d.isdel=0
+            <if test="deptName!=null and deptName.trim() !=''">
+                and d.name=#{deptName}
+            </if>
+        </where>
+    </select>
+</mapper>
