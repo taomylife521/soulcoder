@@ -62,6 +62,7 @@ var vm = new Vue({
             var node = ztree.getNodeByParam("id", selectedDeptId);//根据父框架vm的user对象去查值
             if (node != null) {//如果节点不为空则选中
                 ztree.selectNode(node);
+
             }
             vm.ztrees[treeElement]=ztree;
         },
