@@ -13,9 +13,45 @@ public class SysRole extends  BaseEntity {
 
     private String roledescription;
 
-    private Integer isdel;
+    private transient Integer isdel;
 
     private Integer deptid;
+
+
+    /**
+     * 排序号
+     */
+    private int ordernum;
+
+    /**
+     * 是否展开
+     */
+    private Boolean isopen;
+
+    private String deptname;
+
+    private Date createtime;
+    private  Integer createby;
+
+    public int getOrdernum() {
+        return ordernum;
+    }
+
+    public void setOrdernum(int ordernum) {
+        this.ordernum = ordernum;
+    }
+
+
+
+    public Boolean getIsopen() {
+        return isopen;
+    }
+
+    public void setIsopen(Boolean isopen) {
+        this.isopen = isopen;
+    }
+
+
 
     public Integer getDeptid() {
         return deptid;
@@ -41,10 +77,7 @@ public class SysRole extends  BaseEntity {
         this.createby = createby;
     }
 
-    private String deptname;
 
-    private Date createtime;
-    private Integer createby;
 
 
 

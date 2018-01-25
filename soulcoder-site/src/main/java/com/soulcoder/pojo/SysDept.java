@@ -5,7 +5,6 @@
 package com.soulcoder.pojo;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Aministrator on 2018-01-15.
@@ -39,20 +38,44 @@ public class SysDept extends  BaseEntity {
      */
     private Boolean isopen;
 
-    private List<SysRole> roleList;
+
+
+    private transient Integer createby;
+
+   // private List<SysRole> roleList;
 
     /**
      * 创建时间
      */
     private transient Date createtime;
+    
+    /**
+    * 部门描述
+    */
+    private transient String deptdescription;
 
-    public List<SysRole> getRoleList() {
-        return roleList;
+    public Integer getCreateby() {
+        return createby;
     }
 
-    public void setRoleList(List<SysRole> roleList) {
-        this.roleList = roleList;
+    public void setCreateby(Integer createby) {
+        this.createby = createby;
     }
+
+    public String getDeptdescription() {
+        return deptdescription;
+    }
+
+    public void setDeptdescription(String deptdescription) {
+        this.deptdescription = deptdescription;
+    }
+    //    public List<SysRole> getRoleList() {
+//        return roleList;
+//    }
+//
+//    public void setRoleList(List<SysRole> roleList) {
+//        this.roleList = roleList;
+//    }
 
 
 

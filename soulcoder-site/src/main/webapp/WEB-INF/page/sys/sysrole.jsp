@@ -42,7 +42,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>角色名称:</label>
-                                        <input type="text" placeholder="角色名称" v-model="sRoleName"  class="form-control"/>
+                                        <input type="text" placeholder="角色名称" v-model="sRoleName"  id="sRoleName" data-provide="typeahead"   class="typeahead form-control"/>
                                     </div>
                                 </div>
 
@@ -61,7 +61,7 @@
 
                             </div>
                             <div class="row">
-                                <ul id="deptTree" name="deptTree" style="width: auto;" class="ztree"></ul>
+                                <ul id="roleDeptTree" name="deptTree" style="width: auto;" class="ztree"></ul>
                             </div>
 
                         </div>
@@ -120,7 +120,7 @@
                 <div class="modal-body">
                     <!-- 部门列表 -->
                     <div class="zTreeDemoBackground">
-                        <ul id="deptTree2" name="deptTree" style="width: auto;" class="ztree"></ul>
+                        <ul id="deptTree" name="deptTree" style="width: auto;" class="ztree"></ul>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -175,5 +175,7 @@
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.core.js"></script>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.excheck.js"></script>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exedit.js"></script>
-
+<script src="${path}/statics/adminlte/plugins/typeahead/typeahead.jquery.js"></script>
+<script src="${path}/statics/adminlte/plugins/typeahead/handlebars.js"></script>
+<script src="${path}/statics/adminlte/plugins/typeahead/typeahead.bundle.js"></script>
 <script src="${path}/statics/js/sys/sysrole.js"></script>

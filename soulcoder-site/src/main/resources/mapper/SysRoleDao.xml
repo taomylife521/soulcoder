@@ -12,10 +12,10 @@
         <where>
             isdel=0
             <if test="roleName!=null">
-                rolename=#{roleName}
+              and  rolename=#{roleName}
             </if>
             <if test="deptId>0">
-                deptid=#{deptId}
+               and deptid=#{deptId}
             </if>
 
             <!--  数据过滤  -->
