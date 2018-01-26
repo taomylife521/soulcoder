@@ -11,6 +11,7 @@ var vm = new Vue({
         roleDeptName:'',//角色部门id
         roleDescription:'',//角色描述
         roleId:'',
+        orderNum:'',
         sRoleName:'',//要查询的角色名称
         // sRoleDeptId:'',//要查询的角色部门id
         // sRoleDeptName:'',//要查询的角色部门名称
@@ -97,6 +98,7 @@ var vm = new Vue({
                 vm.roleDeptId=treeNode.parentid;
                 vm.roleDeptName=treeNode.parentname;
                 vm.roleDescription = treeNode.description;
+                vm.orderNum=treeNode.ordernum;
                 vm.selectedTreeNode();//角色信息展示中的部门树默认选中
             }
 

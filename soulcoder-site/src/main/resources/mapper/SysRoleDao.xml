@@ -8,7 +8,7 @@
 <mapper namespace="com.soulcoder.dao.SysRoleDao">
 
     <select id ="queryList" resultType="com.soulcoder.pojo.SysRole">
-        select * from sys_role
+        select * from sys_role as  r
         <where>
             isdel=0
             <if test="roleName!=null">
@@ -21,7 +21,7 @@
             <!--  数据过滤  -->
             ${filterSql}
         </where>
-
+        ORDER  by r.ordernum desc
     </select>
 
 
