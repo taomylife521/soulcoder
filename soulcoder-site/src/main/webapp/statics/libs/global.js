@@ -17,9 +17,9 @@ var deptTreeSettings = {
     data: {
         simpleData: {
             enable: true,
-            idKey: "id",
-            pIdKey: "parentid",//父id对应的键
-            rootPId: 0
+            idKey: "id",// id编号命名 默认
+            pIdKey: "parentid",//父id编号命名 默认
+            rootPId: 0//// 用于修正根节点父节点数据，即 pIdKey 指定的属性值
         }
     },
     edit: {

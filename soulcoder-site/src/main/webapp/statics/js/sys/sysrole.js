@@ -1,34 +1,7 @@
 /**
  * Created by Aministrator on 2018-01-24.
  */
-//部门树设置
-// var roleTreeSettings = {
-//     view: {
-//         selectedMulti: false
-//     },
-//     check: {
-//         enable: false
-//     },
-//     data: {
-//         simpleData: {
-//             enable: true,
-//             idKey: "id",
-//             pIdKey: "parentid",//父id对应的键
-//             rootPId: 0
-//         }
-//     },
-//     edit: {
-//         enable: false
-//     },
-//     callback: {
-//         onClick: onClick
-//     }
-// };
-var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California'];
-$(document).ready(function() {
 
-    $("#sRoleName .typeahead").typeahead( {source: states});
-})
 var vm = new Vue({
     el:"#rolebox",
     data:{
@@ -39,12 +12,15 @@ var vm = new Vue({
         roleDescription:'',//角色描述
         roleId:'',
         sRoleName:'',//要查询的角色名称
-        sRoleDeptId:'',//要查询的角色部门id
-        sRoleDeptName:'',//要查询的角色部门名称
+        // sRoleDeptId:'',//要查询的角色部门id
+        // sRoleDeptName:'',//要查询的角色部门名称
         ztrees:[],//多个ztree映射关系表
         roleTreeSettings : {
                     view: {
-                        selectedMulti: false
+                        selectedMulti: false,
+                        view: {
+                            fontCss: {}
+                        }
                     },
                     check: {
                         enable: false
@@ -64,6 +40,8 @@ var vm = new Vue({
                          onClick: null
                      }
           },
+        // nodeList : [],
+        hiddenNodes:[],//用于存储被隐藏的结点
         roleNameList:[]
 
 
@@ -82,10 +60,34 @@ var vm = new Vue({
     },
 
     methods: {
+        substringMatcher:function(strs){
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                // iterate through the pool of strings and for any string that
+                // contains the substring `q`, add it to the `matches` array
+                $.each(strs, function(i, str) {
+                    if (substrRegex.test(str)) {
+                        matches.push(str);
+                    }
+                });
+                cb(matches);
+            };
+        },
         //新增用户
         addNewUser: function () {
             swal("add");
         },
+        getFontCss: function (treeId, treeNode) {
+          return treeNode.highlight ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
+        },
+
         //单击角色树
         clickRoleTree:function(event, treeId, treeNode, clickFlag){
            // swal(JSON.stringify(treeNode));
@@ -95,7 +97,61 @@ var vm = new Vue({
                 vm.roleDeptId=treeNode.parentid;
                 vm.roleDeptName=treeNode.parentname;
                 vm.roleDescription = treeNode.description;
+                vm.selectedTreeNode();//角色信息展示中的部门树默认选中
             }
+
+        },
+
+        //过滤ztree显示数据
+        filterByRoleName:function(){
+            vm.filter($("#scrollable-dropdown-menu"));
+        },
+        filter: function (obj){
+            var zTreeObj= vm.getZTreeInstance("roleDeptTree");
+            if(vm.hiddenNodes.length>0) {
+                zTreeObj.showNodes(vm.hiddenNodes);  //显示上次搜索后背隐藏的结点
+            }
+            //查找不符合条件的叶子节点
+            function filterFunc(node){
+                var _keywords=$(obj).val();
+                if(_keywords.length<=0){//如果为空，则直接返回不进行寻找
+                    node.highlight =false;//恢复原色
+                    zTreeObj.updateNode(node);//更新节点
+                    return false;
+                }
+                if(node.isParent)//是父节点
+                {
+                    if(node.name.indexOf(_keywords)>-1){//并且索引到值
+                        zTreeObj.selectNode(node);
+                        node.highlight=true;//高亮
+                    }else {
+                        node.highlight = false;
+                    }
+                    zTreeObj.updateNode(node);
+                    return false;
+                }
+                if(node.name.indexOf(_keywords)>-1)//不是父节点,直接匹配,找到匹配的内容项
+                {
+
+                    node.highlight=true;//高亮
+                    zTreeObj.selectNode(node);
+                    zTreeObj.updateNode(node);//更新节点
+                    return false;
+                }
+                else {
+                    node.highlight =false;//恢复原色
+                    zTreeObj.updateNode(node);//更新节点
+                    return true;
+                }
+            };
+            vm.hiddenNodes=zTreeObj.getNodesByFilter(filterFunc);//获取不符合条件的叶子结点
+            //隐藏不符合条件的叶子结点
+            zTreeObj.hideNodes(vm.hiddenNodes);
+            var nodes = zTreeObj.getSelectedNodes();//把所有选择的节点展开
+                for(var i=0;i<nodes.length;i++) {
+                    zTreeObj.expandNode(nodes[i], true, true, true);
+                }
+
         },
         //载入角色树
         loadRoleTreeList: function () {
@@ -112,6 +168,7 @@ var vm = new Vue({
                     }
                    // vm.roleTreeList=result.data.rolelist;
                     vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
+                    vm.roleTreeSettings.view.fontCss=vm.getFontCss;
                     vm.initDeptTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings);
                     for (var key=0;key<result.data.rolelist.length;key++){//去除所有的角色只留部门
                         if(result.data.rolelist[key].role==true){
@@ -120,16 +177,12 @@ var vm = new Vue({
                             key-=1;
                         }
                     }
-
-                    // $('#sRoleName .typeahead').typeahead({
-                    //         hint: true,
-                    //         highlight: true,
-                    //         minLength: 1
-                    //     },
-                    //     {
-                    //         name: 'roleNameList',
-                    //         source: states//vm.roleNameList
-                    //     });
+                    var $obj=$("#scrollable-dropdown-menu");
+                    $obj.typeahead({
+                        hint: true,
+                        highlight: true,
+                        minLength: 1
+                    }, { limit: 3,source: vm.substringMatcher(vm.roleNameList)});//自动提示
                         // bind other two tree
                         vm.initDeptTree("deptTreeCopy",result.data.rolelist,vm.roleDeptId,deptTreeSettings);
                         vm.initDeptTree("deptTree",result.data.rolelist,vm.sRoleDeptId,deptTreeSettings);
@@ -143,13 +196,27 @@ var vm = new Vue({
         //初始化部门树
         initDeptTree:function(treeElementId,deptList,selectedDeptId,settings){
             var ztree = $.fn.zTree.init($("#"+treeElementId), settings, deptList);
-            var node = ztree.getNodeByParam("id", selectedDeptId);//根据父框架vm的user对象去查值
+           var nodes= ztree.getNodes();
+           for(var i=0;i<nodes.length;i++){
+               nodes[i].highlight=false;
+               nodes[i].open=nodes[i].isopen?true:false;
+           }
+            var node = ztree.getNodeByParam("id", selectedDeptId);//根据参数查询节点
             if (node != null) {//如果节点不为空则选中
                 ztree.selectNode(node);
-
+                node.highlight=true;
+                ztree.updateNode(node);
             }
-            vm.ztrees.push({id:treeElementId,instance:ztree});//缓存树的映射关系
 
+            vm.ztrees.push({id:treeElementId,instance:ztree});//缓存树的映射关系
+        },
+        //选中树中的某个节点id
+        selectedTreeNode:function(){
+                var ztree = vm.getZTreeInstance("deptTree");
+                var node = ztree.getNodeByParam("id", vm.roleDeptId);//根据父框架vm的user对象去查值
+                if (node != null) {//如果节点不为空则选中
+                    ztree.selectNode(node);
+                }
 
         },
 

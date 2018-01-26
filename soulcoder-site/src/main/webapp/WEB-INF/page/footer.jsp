@@ -28,7 +28,7 @@
 <script src="${path}/statics/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/tooltips/tipso.js"></script>
-<link href="${path}/statics/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js" rel="stylesheet" />
+<%--<link href="${path}/statics/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js" rel="stylesheet" />--%>
 <script>
 
     var oLanguageData = {

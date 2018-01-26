@@ -19,6 +19,7 @@
     <%@include file="/WEB-INF/page/header.jsp"%>
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/demo.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="${path}/statics/adminlte/plugins/typeahead/example.css">
 
     <style>
         .heightlight {
@@ -42,22 +43,22 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>角色名称:</label>
-                                        <input type="text" placeholder="角色名称" v-model="sRoleName"  id="sRoleName" data-provide="typeahead"   class="typeahead form-control"/>
+                                        <input type="text" placeholder="角色名称" @change="filterByRoleName" v-model="sRoleName"  id="scrollable-dropdown-menu" data-provide="typeahead"   class="typeahead form-control"/>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>角色部门:</label>
-                                        <input type="text" readonly="readonly"  data-toggle="modal" data-target="#myModalCopy" v-model="sRoleDeptName"  :sDeptId="sRoleDeptId"  class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label ></label>
-                                    <button type="button" class="btn margin-r-5 btn-primary pull-right " style="margin-top:21px" @click="loadRoleTreeList">查询</button>
-                                    </div>
-                                </div>
+                                <%--<div class="col-md-6">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label>角色部门:</label>--%>
+                                        <%--<input type="text" readonly="readonly"  data-toggle="modal" data-target="#myModalCopy" v-model="sRoleDeptName"  :sDeptId="sRoleDeptId"  class="form-control" />--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="col-md-2">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label ></label>--%>
+                                    <%--<button type="button" class="btn margin-r-5 btn-primary pull-right " style="margin-top:21px" @click="loadRoleTreeList">查询</button>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
 
                             </div>
                             <div class="row">
@@ -131,27 +132,27 @@
         </div>
     </div>
 
-  <!--部门树弹框-->
-    <div class="modal fade" id="myModalCopy" style="display: none" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" >部门列表</h4>
-              </div>
-              <div class="modal-body">
-                  <!-- 部门列表 -->
-                  <div class="zTreeDemoBackground">
-                      <ul id="deptTreeCopy" name="deptTree" style="width: auto;" class="ztree"></ul>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                  <button type="button" class="btn btn-primary" @click="confirmDeptCopy" >确定</button>
-              </div>
-          </div>
-      </div>
-  </div>
+  <%--<!--部门树弹框-->--%>
+    <%--<div class="modal fade" id="myModalCopy" style="display: none" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
+      <%--<div class="modal-dialog" role="document">--%>
+          <%--<div class="modal-content">--%>
+              <%--<div class="modal-header">--%>
+                  <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
+                  <%--<h4 class="modal-title" >部门列表</h4>--%>
+              <%--</div>--%>
+              <%--<div class="modal-body">--%>
+                  <%--<!-- 部门列表 -->--%>
+                  <%--<div class="zTreeDemoBackground">--%>
+                      <%--<ul id="deptTreeCopy" name="deptTree" style="width: auto;" class="ztree"></ul>--%>
+                  <%--</div>--%>
+              <%--</div>--%>
+              <%--<div class="modal-footer">--%>
+                  <%--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>--%>
+                  <%--<button type="button" class="btn btn-primary" @click="confirmDeptCopy" >确定</button>--%>
+              <%--</div>--%>
+          <%--</div>--%>
+      <%--</div>--%>
+  <%--</div>--%>
 
 </div>
 
@@ -173,8 +174,9 @@
 <%@include file="/WEB-INF/page/footer.jsp"%>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.core.js"></script>
-<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.excheck.js"></script>
-<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exedit.js"></script>
+<%--<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.excheck.js"></script>--%>
+<%--<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exedit.js"></script>--%>
+<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exhide.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.jquery.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/handlebars.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.bundle.js"></script>
