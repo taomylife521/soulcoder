@@ -131,7 +131,6 @@ var vm = new Vue({
                             ordernum:vm.orderNum,
                             roledeptname:vm.roleDeptName
                         };
-                //var data="roledeptname="+vm.roleDeptName+"&rolename="+vm.roleName+"&roledescription="+vm.roleDescription+"&roledeptid="+vm.roleDeptId+"&ordernum="+vm.orderNum;
                 $.ajax({
                     type: "POST",
                     url: "/sys/role/add",

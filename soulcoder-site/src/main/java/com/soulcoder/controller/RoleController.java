@@ -93,6 +93,14 @@ public class RoleController extends  AbstractController {
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
             return res;
         }
+        //先查询当前部门下有没有该角色，有的话直接返回失败，没有则添加
+        Req_RoleList req = new Req_RoleList();
+        req.setRoleName(request.roleName);
+        req.setDeptId(request.roleDeptId);
+        List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
+        if(roleList.size() > 0){
+            return R.failed("当前部门下已存在该角色");
+        }
         return R.ok();
     }
 
