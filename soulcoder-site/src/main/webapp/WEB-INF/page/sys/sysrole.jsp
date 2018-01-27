@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/demo.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/typeahead/example.css">
+    <link rel="stylesheet" href="${path}/statics/libs/vee-validate/vee-validate.css">
 
     <style>
         .heightlight {
@@ -34,6 +35,12 @@
             margin-bottom: -2px;
             margin-right: 5px;
         }
+        #rolebox .box-body{padding: 0px}
+        #rolebox .nav-tabs-custom{margin-bottom: 0px}
+        #rolebox .nav-tabs-custom>.nav-tabs>li.active {
+            border-top-color: #eff0f1;
+        }
+        .control.has-icon>.fa{top:24px}
     </style>
 </head>
 <body>
@@ -49,10 +56,12 @@
                             <!-- 部门列表 -->
                             <div class="row">
                                 <div class="col-md-4">
+
                                     <div class="form-group">
                                         <label>角色名称:</label>
                                         <input type="text" placeholder="角色名称" @change="filterByRoleName" v-model="sRoleName"  id="scrollable-dropdown-menu" data-provide="typeahead"   class="typeahead form-control"/>
                                     </div>
+
                                 </div>
 
                                 <%--<div class="col-md-6">--%>
@@ -93,35 +102,43 @@
                             <div class="tab-content">
                                 <div class="active tab-pane" id="roleInfo">
                                     <div class="row">
-                                        <div class="form-group">
+                                        <p class="control has-icon has-icon-right">
                                             <label>角色名称:</label>
-                                            <input type="text" placeholder="角色名称" class="form-control" v-model="roleName" :roleId="roleId"/>
-                                        </div>
+                                            <input type="text"  v-validate="'required'" name="roleName" placeholder="角色名称" :class="{'input': true, 'is-danger': errors.has('roleName') }" class="form-control" v-model="roleName" :roleId="roleId"/>
+                                             <i v-show="errors.has('roleName')" class="fa fa-warning"></i>
+                                            <span v-show="errors.has('roleName')" class="help is-danger">{{ errors.first('roleName') }}</span>
+                                        </p>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group">
+                                        <p class="control has-icon has-icon-right">
                                             <label>角色部门:</label>
-                                            <input type="text" readonly="readonly"  data-toggle="modal" data-target="#myModal"  v-model="roleDeptName"  :deptId="roleDeptId" class="form-control" />
-                                        </div>
+                                            <input type="text" readonly="readonly"  v-validate="'required'"  name="roleDeptName" data-toggle="modal"  data-target="#myModal" :class="{'input': true, 'is-danger': errors.has('roleDeptName') }"  v-model="roleDeptName"  :deptId="roleDeptId" class="form-control" />
+                                            <i v-show="errors.has('roleDeptName')" class="fa fa-warning"></i>
+                                            <span v-show="errors.has('roleDeptName')" class="help is-danger">{{ errors.first('roleDeptName') }}</span>
+                                        </p>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group">
+                                        <p class="control has-icon has-icon-right">
                                             <label>角色描述:</label>
-                                            <textarea placeholder="角色描述" class="form-control" v-model="roleDescription"></textarea>
-                                        </div>
+                                            <textarea placeholder="角色描述"  v-validate="'required'" class="form-control"  name="roleDescription" :class="{'input': true, 'is-danger': errors.has('roleDescription') }" v-model="roleDescription"></textarea>
+                                            <i v-show="errors.has('roleDescription')" class="fa fa-warning"></i>
+                                            <span v-show="errors.has('roleDescription')" class="help is-danger">{{ errors.first('roleDescription') }}</span>
+                                        </p>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group">
+                                        <p class="control has-icon has-icon-right">
                                             <label>排序号:</label>
-                                            <input type="text" placeholder="排序号" class="form-control" v-model="orderNum">
-                                        </div>
+                                            <input type="text" placeholder="排序号"  v-validate="'required|numeric'" class="form-control" name="orderNum" :class="{'input': true, 'is-danger': errors.has('orderNum') }" v-model="orderNum">
+                                            <i v-show="errors.has('orderNum')" class="fa fa-warning"></i>
+                                            <span v-show="errors.has('orderNum')" class="help is-danger">{{ errors.first('orderNum') }}</span>
+                                        </p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 " >
-                                            <button  class="btn-primary form-control pull-right" style="width:65px" >修改</button>
+                                            <button  class="btn-primary form-control pull-right" style="width:65px" @click="modifyRoleInfo" >修改</button>
                                         </div>
                                         <div class="col-md-6 " >
-                                            <button  class="btn-info form-control" style="width:65px" >新增</button>
+                                            <button  class="btn-info form-control" style="width:65px"  @click="addRoleInfo">新增</button>
                                         </div>
 
                                     </div>
@@ -302,4 +319,8 @@
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.jquery.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/handlebars.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.bundle.js"></script>
+
+<script src="${path}/statics/libs/vee-validate/vee-validate.js"></script>
+<script src="${path}/statics/libs/vee-validate/locale/zh_CN.js"></script><!--该js必须在vee-validate.js后面-->
+
 <script src="${path}/statics/js/sys/sysrole.js"></script>

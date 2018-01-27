@@ -1,7 +1,7 @@
 /**
  * Created by Aministrator on 2018-01-24.
  */
-
+Vue.use(VeeValidate); // good to go.
 var vm = new Vue({
     el:"#rolebox",
     data:{
@@ -53,6 +53,12 @@ var vm = new Vue({
     created:function(){//vm实例加载完毕
         this.loadRoleTreeList();//里面有部门对应的各个角色
 
+        // this.validator = new Validator({
+        //     roleName: 'required',
+        //     roleDeptName: 'required'
+        // });
+        // this.$set(this, 'errors', this.validator.errors);
+        this.$validator.localize('zh_CN');
         //this.loadDeptList();
 
     },
@@ -61,6 +67,10 @@ var vm = new Vue({
     },
 
     methods: {
+
+
+
+
         substringMatcher:function(strs){
             return function findMatches(q, cb) {
                 var matches, substringRegex;
@@ -81,9 +91,42 @@ var vm = new Vue({
                 cb(matches);
             };
         },
-        //新增用户
-        addNewUser: function () {
-            swal("add");
+        //修改角色信息
+        modifyRoleInfo:function(){
+            this.$validator.validateAll().then(function(result){ //提交之前验证所有的错误
+                if (!result) {
+                    return false; //验证不通过
+                }
+                // 验证通过
+                var data="";
+                $.ajax({
+                    type: "POST",
+                    url: "/sys/role/modify",
+                    dataType: "json",
+                     data:data,
+                    success: function (result) {
+                        if (result.status == 0) {
+                            console.log("修改失败:" + result);
+                            return;
+                        }
+                        swal("修改成功");
+                        window.location.reload();
+                    }
+                });
+                return false;
+            });
+        },
+        //添加角色信息
+        addRoleInfo: function () {
+            this.$validator.validateAll().then(function(result){ //提交之前验证所有的错误
+                if (!result) {
+                    return false; //验证不通过
+                }
+                // 验证通过
+
+                swal('pass');
+                return false;
+            });
         },
         getFontCss: function (treeId, treeNode) {
           return treeNode.highlight ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
