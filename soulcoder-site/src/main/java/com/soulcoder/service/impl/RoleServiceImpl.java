@@ -8,6 +8,7 @@ import com.soulcoder.common.annotation.DataFilter;
 import com.soulcoder.dao.SysRoleDao;
 import com.soulcoder.pojo.SysRole;
 import com.soulcoder.requestdto.Req_AddRoleInfo;
+import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,13 @@ public class RoleServiceImpl implements IRoleService {
     }
 
 
+    /**
+    * @Author:Aministrator
+    * @Description:保存角色信息
+    * @Date:2018-01-27
+    * @param
+    * @return
+    */
     public boolean save(Req_AddRoleInfo request) {
 
         SysRole role = new SysRole();
@@ -53,6 +61,18 @@ public class RoleServiceImpl implements IRoleService {
         role.setRolename(request.roleName);
         roleDao.save(role);//添加角色到部门
         return true;
+    }
+
+
+    /**
+    * @Author:Aministrator
+    * @Description:更新角色信息
+    * @Date:2018-01-27
+    * @param
+    * @return
+    */
+    public boolean update(Req_UpdateRoleInfo request) {
+        return false;
     }
 
 

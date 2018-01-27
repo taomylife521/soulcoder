@@ -101,6 +101,7 @@ public class RoleController extends  AbstractController {
         if(roleList.size() > 0){
             return R.failed("当前部门下已存在该角色");
         }
+
         return R.ok();
     }
 
