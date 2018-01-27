@@ -24,6 +24,35 @@
         ORDER  by r.ordernum desc
     </select>
 
+<insert id="save" parameterType="com.soulcoder.pojo.SysRole" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_role
+    (
+        `id`,
+        `rolename`,
+        `roledescription`,
+        `deptid`,
+        `isdel`,
+        `createtime`,
+        `createby`,
+        `ordernum`,
+        `isopen`
+    )
+    VALUES
+     (
+        #{id},
+        #{rolename},
+        #{roledescription},
+        #{deptid},
+        #{isdel},
+        #{createtime},
+        #{createby},
+        #{ordernum},
+        #{isopen}
+
+    )
+</insert>
+
+
 
 
 

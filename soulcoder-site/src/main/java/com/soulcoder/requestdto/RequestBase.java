@@ -4,8 +4,11 @@
 
 package com.soulcoder.requestdto;
 
+import com.soulcoder.partener.shiro.ShiroUtils;
+
 /**
  * Created by Aministrator on 2018-01-11.
  */
 public class RequestBase {
+    public Integer loginId= ShiroUtils.getUserEntity().getId();
 }

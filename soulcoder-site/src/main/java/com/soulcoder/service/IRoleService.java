@@ -1,6 +1,7 @@
 package com.soulcoder.service;
 
 import com.soulcoder.pojo.SysRole;
+import com.soulcoder.requestdto.Req_AddRoleInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -17,5 +18,14 @@ public interface IRoleService {
     * @param
     * @return
     */
-    public List<SysRole> queryList(Map<String,Object> map);
+     List<SysRole> queryList(Map<String,Object> map);
+
+    /**
+     * @Author:Aministrator
+     * @Description:添加角色信息
+     * @Date:2018-01-22
+     * @param
+     * @return
+     */
+     boolean save(Req_AddRoleInfo request);
 }

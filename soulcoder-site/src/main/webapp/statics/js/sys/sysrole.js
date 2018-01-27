@@ -51,7 +51,7 @@ var vm = new Vue({
 
     },
     created:function(){//vm实例加载完毕
-        this.loadRoleTreeList();//里面有部门对应的各个角色
+        this.loadRoleTreeList(false);//里面有部门对应的各个角色
 
         // this.validator = new Validator({
         //     roleName: 'required',
@@ -95,25 +95,25 @@ var vm = new Vue({
         modifyRoleInfo:function(){
             this.$validator.validateAll().then(function(result){ //提交之前验证所有的错误
                 if (!result) {
-                    return false; //验证不通过
+                    return; //验证不通过
                 }
                 // 验证通过
-                var data="";
+                var data="roleid="+vm.roleId+"&rolename="+vm.roleName+"&roledescription="+vm.roleDescription+"&roledeptid="+vm.roleDeptId+"&ordernum="+vm.orderNum;
                 $.ajax({
                     type: "POST",
                     url: "/sys/role/modify",
                     dataType: "json",
                      data:data,
                     success: function (result) {
-                        if (result.status == 0) {
-                            console.log("修改失败:" + result);
+                        if (parseInt(result.status) == 0) {
+                            console.log("修改失败:" + result.errormsg);
                             return;
                         }
                         swal("修改成功");
                         window.location.reload();
                     }
                 });
-                return false;
+
             });
         },
         //添加角色信息
@@ -123,9 +123,35 @@ var vm = new Vue({
                     return false; //验证不通过
                 }
                 // 验证通过
+                // 验证通过
+                var data={
+                            rolename:vm.roleName,
+                            roledescription:vm.roleDescription,
+                            roledeptid:vm.roleDeptId,
+                            ordernum:vm.orderNum,
+                            roledeptname:vm.roleDeptName
+                        };
+                //var data="roledeptname="+vm.roleDeptName+"&rolename="+vm.roleName+"&roledescription="+vm.roleDescription+"&roledeptid="+vm.roleDeptId+"&ordernum="+vm.orderNum;
+                $.ajax({
+                    type: "POST",
+                    url: "/sys/role/add",
+                    dataType: "json",
+                    data:JSON.stringify(data),
+                    contentType:'application/json;charset=UTF-8',
+                    success: function (result) {
+                        if (parseInt(result.status) == 0) {
+                            swal(result.errormsg);
+                            vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                            vm.selectedTreeNode("roleDeptTree","name",vm.roleName);
+                            return;
+                        }
+                        //vm.loadRoleTreeList(true);
+                        //vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                        swal("添加成功");
+                        window.location.reload();
+                    }
+                });
 
-                swal('pass');
-                return false;
             });
         },
         getFontCss: function (treeId, treeNode) {
@@ -136,13 +162,13 @@ var vm = new Vue({
         clickRoleTree:function(event, treeId, treeNode, clickFlag){
            // swal(JSON.stringify(treeNode));
             if(treeNode.role){
-                vm.roleId=treeNode.id;
+                vm.roleId=treeNode.id.split('_')[1];
                 vm.roleName=treeNode.name;
                 vm.roleDeptId=treeNode.parentid;
                 vm.roleDeptName=treeNode.parentname;
                 vm.roleDescription = treeNode.description;
                 vm.orderNum=treeNode.ordernum;
-                vm.selectedTreeNode();//角色信息展示中的部门树默认选中
+                vm.selectedTreeNode("deptTree","id",vm.roleDeptId);//角色信息展示中的部门树默认选中
             }
 
         },
@@ -199,7 +225,7 @@ var vm = new Vue({
 
         },
         //载入角色树
-        loadRoleTreeList: function () {
+        loadRoleTreeList: function (isOnlyInitRoleTree) {
           //  var data="rolename="+vm.sRoleName+"&deptid="+vm.sRoleDeptId;
             $.ajax({
                 type: "POST",
@@ -215,22 +241,24 @@ var vm = new Vue({
                     vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
                     vm.roleTreeSettings.view.fontCss=vm.getFontCss;
                     vm.initDeptTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings);
-                    for (var key=0;key<result.data.rolelist.length;key++){//去除所有的角色只留部门
-                        if(result.data.rolelist[key].role==true){
-                            vm.roleNameList.push(result.data.rolelist[key].name);
-                            result.data.rolelist.splice(key,1);
-                            key-=1;
+                    if(!isOnlyInitRoleTree) {
+                        for (var key = 0; key < result.data.rolelist.length; key++) {//去除所有的角色只留部门
+                            if (result.data.rolelist[key].role == true) {
+                                vm.roleNameList.push(result.data.rolelist[key].name);
+                                result.data.rolelist.splice(key, 1);
+                                key -= 1;
+                            }
                         }
-                    }
-                    var $obj=$("#scrollable-dropdown-menu");
-                    $obj.typeahead({
-                        hint: true,
-                        highlight: true,
-                        minLength: 1
-                    }, { limit: 3,source: vm.substringMatcher(vm.roleNameList)});//自动提示
+                        var $obj = $("#scrollable-dropdown-menu");
+                        $obj.typeahead({
+                            hint: true,
+                            highlight: true,
+                            minLength: 1
+                        }, {limit: 3, source: vm.substringMatcher(vm.roleNameList)});//自动提示
                         // bind other two tree
-                        vm.initDeptTree("deptTreeCopy",result.data.rolelist,vm.roleDeptId,deptTreeSettings);
-                        vm.initDeptTree("deptTree",result.data.rolelist,vm.sRoleDeptId,deptTreeSettings);
+                        vm.initDeptTree("deptTreeCopy", result.data.rolelist, vm.roleDeptId, deptTreeSettings);
+                        vm.initDeptTree("deptTree", result.data.rolelist, vm.sRoleDeptId, deptTreeSettings);
+                    }
 
 
 
@@ -256,11 +284,12 @@ var vm = new Vue({
             vm.ztrees.push({id:treeElementId,instance:ztree});//缓存树的映射关系
         },
         //选中树中的某个节点id
-        selectedTreeNode:function(){
-                var ztree = vm.getZTreeInstance("deptTree");
-                var node = ztree.getNodeByParam("id", vm.roleDeptId);//根据父框架vm的user对象去查值
+        selectedTreeNode:function(treeElementId,selectedProp,selectedPropValue){
+                var ztree = vm.getZTreeInstance(treeElementId);
+                var node = ztree.getNodeByParam(selectedProp, selectedPropValue);//根据父框架vm的user对象去查值
                 if (node != null) {//如果节点不为空则选中
                     ztree.selectNode(node);
+                    ztree.expandNode(node, true, true, true);
                 }
 
         },

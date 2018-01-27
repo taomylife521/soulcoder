@@ -9,8 +9,10 @@ import com.soulcoder.common.utils.ValidatorUtils;
 import com.soulcoder.enums.ResponseStatus;
 import com.soulcoder.pojo.SysDept;
 import com.soulcoder.pojo.SysRole;
+import com.soulcoder.requestdto.Req_AddRoleInfo;
 import com.soulcoder.requestdto.Req_QueryDeptList;
 import com.soulcoder.requestdto.Req_RoleList;
+import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 import com.soulcoder.responsedto.R;
 import com.soulcoder.responsedto.Res_QueryRoleTreeList;
 import com.soulcoder.responsedto.dtomodel.QueryRoleTreeDetail;
@@ -18,7 +20,9 @@ import com.soulcoder.service.IDeptService;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
@@ -79,6 +83,40 @@ public class RoleController extends  AbstractController {
             }
         }
         return R.ok(queryRoleTreeList);//返回部门列表和角色列表
+    }
+
+    @RequestMapping(value="modify",method = RequestMethod.POST)
+    @ResponseBody
+    public R modify(Req_UpdateRoleInfo request){
+        //校验实体
+        R res = ValidatorUtils.validateEntity(request);
+        if (res.getStatus() != ResponseStatus.Success.getIndex()) {
+            return res;
+        }
+        return R.ok();
+    }
+
+    @RequestMapping(value = "add",method = RequestMethod.POST)
+    @ResponseBody
+    public R add(@RequestBody  Req_AddRoleInfo request){
+        //校验实体
+        R res = ValidatorUtils.validateEntity(request);
+        if (res.getStatus() != ResponseStatus.Success.getIndex()) {
+            return res;
+        }
+        //先查询当前部门下有没有该角色，有的话直接返回失败，没有则添加
+        Req_RoleList req = new Req_RoleList();
+        req.setRoleName(request.roleName);
+        req.setDeptId(request.roleDeptId);
+        List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
+        if(roleList.size() > 0){
+            return R.failed("当前部门下已存在该角色");
+        }
+      boolean r= roleService.save(request);
+        if(!r){
+            return R.failed("添加失败");
+        }
+        return R.ok();
     }
 
     private QueryRoleTreeDetail fillQueryRoleTreeDetail(SysDept dept){
