@@ -98,15 +98,24 @@ var vm = new Vue({
                     return; //验证不通过
                 }
                 // 验证通过
-                var data="roleid="+vm.roleId+"&rolename="+vm.roleName+"&roledescription="+vm.roleDescription+"&roledeptid="+vm.roleDeptId+"&ordernum="+vm.orderNum;
+               // var data="roleid="+vm.roleId+"&rolename="+vm.roleName+"&roledescription="+vm.roleDescription+"&roledeptid="+vm.roleDeptId+"&ordernum="+vm.orderNum;
+                var data={
+                    rolename:vm.roleName,
+                    roledescription:vm.roleDescription,
+                    roledeptid:vm.roleDeptId,
+                    ordernum:vm.orderNum,
+                    roledeptname:vm.roleDeptName,
+                    roleid:vm.roleId
+                };
                 $.ajax({
                     type: "POST",
                     url: "/sys/role/modify",
                     dataType: "json",
-                     data:data,
+                    data:JSON.stringify(data),
+                    contentType:'application/json;charset=UTF-8',
                     success: function (result) {
                         if (parseInt(result.status) == 0) {
-                            console.log("修改失败:" + result.errormsg);
+                            swal("修改失败:" + result.errormsg);
                             return;
                         }
                         swal("修改成功");

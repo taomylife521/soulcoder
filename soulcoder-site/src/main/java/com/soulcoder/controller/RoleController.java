@@ -85,9 +85,12 @@ public class RoleController extends  AbstractController {
         return R.ok(queryRoleTreeList);//返回部门列表和角色列表
     }
 
+    /**
+    * 修改角色信息
+    */
     @RequestMapping(value="modify",method = RequestMethod.POST)
     @ResponseBody
-    public R modify(Req_UpdateRoleInfo request){
+    public R modify(@RequestBody Req_UpdateRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request);
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
@@ -101,10 +104,17 @@ public class RoleController extends  AbstractController {
         if(roleList.size() > 0){
             return R.failed("当前部门下已存在该角色");
         }
-
-        return R.ok();
+        boolean r=roleService.update(request);
+        if(r) {
+            return R.ok();
+        }
+        return R.failed("更新失败");
     }
 
+    
+    /**
+    * 添加角色信息
+    */
     @RequestMapping(value = "add",method = RequestMethod.POST)
     @ResponseBody
     public R add(@RequestBody  Req_AddRoleInfo request){

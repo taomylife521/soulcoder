@@ -12,7 +12,6 @@ import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -72,6 +71,19 @@ public class RoleServiceImpl implements IRoleService {
     * @return
     */
     public boolean update(Req_UpdateRoleInfo request) {
+       SysRole sysRole= roleDao.queryObject(request.roleId);
+       if(sysRole == null){//说明不存在该角色信息
+           return false;
+       }
+       sysRole.setRolename(request.roleName);
+       sysRole.setRoledescription(request.roleDescription);
+       sysRole.setOrdernum(request.orderNum);
+       sysRole.setDeptname(request.roleDeptName);
+       sysRole.setDeptid(request.roleDeptId);
+     int r= roleDao.update(sysRole);
+     if(r>0){
+         return true;
+     }
         return false;
     }
 

@@ -7,6 +7,7 @@
 
 <mapper namespace="com.soulcoder.dao.SysRoleDao">
 
+    <!--查询角色列表-->
     <select id ="queryList" resultType="com.soulcoder.pojo.SysRole">
         select * from sys_role as  r
         <where>
@@ -24,6 +25,7 @@
         ORDER  by r.ordernum desc
     </select>
 
+    <!--保存角色信息-->
 <insert id="save" parameterType="com.soulcoder.pojo.SysRole" useGeneratedKeys="true" keyProperty="id">
     insert into sys_role
     (
@@ -52,7 +54,21 @@
     )
 </insert>
 
+    <select id="queryObject" resultType="com.soulcoder.pojo.SysRole">
+        select * from sys_role where id = #{value}
+    </select>
 
+    <update id="update">
+        update sys_role
+         <set>
+             <if test="rolename != null">`rolename`=#{rolename},</if>
+             <if test="roledescription != null">`roledescription`=#{roledescription},</if>
+             <if test="deptid != null">`deptid`=#{deptid},</if>
+             <if test="ordernum != null">`ordernum`=#{ordernum},</if>
+
+         </set>
+        where id=#{id}
+    </update>
 
 
 

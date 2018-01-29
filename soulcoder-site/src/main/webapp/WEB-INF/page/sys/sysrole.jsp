@@ -133,7 +133,7 @@
                                             <span v-show="errors.has('orderNum')" class="help is-danger">{{ errors.first('orderNum') }}</span>
                                         </p>
                                     </div>
-                                    <div class="row">
+                                    <div class="row"  style="margin-top: 20px;">
                                         <div class="col-md-6 " >
                                             <button  class="btn-primary form-control pull-right" style="width:65px" @click="modifyRoleInfo" >修改</button>
                                         </div>
