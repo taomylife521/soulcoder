@@ -4,12 +4,15 @@
 
 package com.soulcoder;
 
+import com.soulcoder.partener.shiro.ShiroUtils;
+
 /**
  * Created by Aministrator on 2018-01-15.
  * 更新工程内的文件编码
  */
 public class AppStart {
-//    public static void main(String[] args) {
+   public static void main(String[] args) {
+       System.out.println(ShiroUtils.sha256("admin","MTIzNDU2"));
 //        String srcDir = "D:\\test Project\\ND.JavaProject\\soulcoder\\src";
 //        List<String> fileList = new ArrayList<String>();
 //        fetchFileList(srcDir,fileList,".java");
@@ -74,5 +77,5 @@ public class AppStart {
 //                }
 //            }
 //        }
-//    }
+    }
 }

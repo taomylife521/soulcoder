@@ -84,6 +84,7 @@ public class LoginController extends AbstractController {
 
 			//密码校验
 			UsernamePasswordToken token = new UsernamePasswordToken(request.getUserName(),request.getPassword());
+			token.setRememberMe(true);
 		    ShiroUtils.getSubject().login(token);
 			return  R.ok();
 			

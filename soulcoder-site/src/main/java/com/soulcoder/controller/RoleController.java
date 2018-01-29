@@ -6,31 +6,29 @@ package com.soulcoder.controller;
 
 import com.soulcoder.common.utils.EntityToMapUtils;
 import com.soulcoder.common.utils.ValidatorUtils;
+import com.soulcoder.common.validator.ModifyGroup;
+import com.soulcoder.common.validator.SaveGroup;
 import com.soulcoder.enums.ResponseStatus;
 import com.soulcoder.pojo.SysDept;
 import com.soulcoder.pojo.SysRole;
-import com.soulcoder.requestdto.Req_AddRoleInfo;
-import com.soulcoder.requestdto.Req_QueryDeptList;
-import com.soulcoder.requestdto.Req_RoleList;
-import com.soulcoder.requestdto.Req_UpdateRoleInfo;
+import com.soulcoder.requestdto.*;
 import com.soulcoder.responsedto.R;
 import com.soulcoder.responsedto.Res_QueryRoleTreeList;
 import com.soulcoder.responsedto.dtomodel.QueryRoleTreeDetail;
 import com.soulcoder.service.IDeptService;
 import com.soulcoder.service.IRoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Aministrator on 2018-01-19.
- */
+ * 权限标识为RequestMapping值连起来替换“/“ 为 ”.“
+ * */
 @Controller
 @RequestMapping("/sys/role")
 public class RoleController extends  AbstractController {
@@ -56,6 +54,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping("list")
     @ResponseBody
+   @RequiresPermissions("sys.role.list")
     public R list(Req_RoleList request) {
         //校验实体
         R res = ValidatorUtils.validateEntity(request);
@@ -90,9 +89,10 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping(value="modify",method = RequestMethod.POST)
     @ResponseBody
+//    @RequiresPermissions("sys.role.modify")
     public R modify(@RequestBody Req_UpdateRoleInfo request){
         //校验实体
-        R res = ValidatorUtils.validateEntity(request);
+        R res = ValidatorUtils.validateEntity(request, ModifyGroup.class);
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
             return res;
         }
@@ -115,11 +115,12 @@ public class RoleController extends  AbstractController {
     /**
     * 添加角色信息
     */
-    @RequestMapping(value = "add",method = RequestMethod.POST)
+    @RequestMapping(value = "save",method = RequestMethod.POST)
     @ResponseBody
-    public R add(@RequestBody  Req_AddRoleInfo request){
+//    @RequiresPermissions("sys.role.save")
+    public R save(@RequestBody  Req_AddRoleInfo request){
         //校验实体
-        R res = ValidatorUtils.validateEntity(request);
+        R res = ValidatorUtils.validateEntity(request, SaveGroup.class);
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
             return res;
         }
@@ -136,6 +137,25 @@ public class RoleController extends  AbstractController {
             return R.failed("添加失败");
         }
         return R.ok();
+    }
+
+    /**
+    * 删除角色
+    */
+    @RequestMapping("/delete")
+    @ResponseBody
+//    @RequiresPermissions("sys.role.delete")
+    public R delete(@PathVariable Req_DeleteRoleInfo request){
+        //校验实体
+        R res = ValidatorUtils.validateEntity(request);
+        if (res.getStatus() != ResponseStatus.Success.getIndex()) {
+            return res;
+        }
+        boolean r=roleService.delete(request);
+        if(r){
+            return R.ok();
+        }
+       return R.failed("删除失败");
     }
 
     private QueryRoleTreeDetail fillQueryRoleTreeDetail(SysDept dept){

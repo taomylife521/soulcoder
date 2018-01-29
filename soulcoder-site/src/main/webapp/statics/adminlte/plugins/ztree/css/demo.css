@@ -27,7 +27,7 @@ div.content_wrap div.right{float: right;width: 340px;}
 div.zTreeDemoBackground {width:auto;height:362px;text-align:left;}
 
 /*ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:220px;height:360px;overflow-y:scroll;overflow-x:auto;}*/
-ul.ztree {margin-top: 10px;border:1px dashed #617775;width:220px;height:360px;overflow-x:auto;overflow-y:auto;}
+ul.ztree {margin-top: 10px;border:1px dashed #617775;width:220px;height:282px;overflow-x:auto;overflow-y:auto;}
 ul.log {border: 1px solid #617775;background: #f0f6e4;width:300px;height:170px;overflow: hidden;}
 ul.log.small {height:45px;}
 ul.log li {color: #666666;list-style: none;padding-left: 10px;}

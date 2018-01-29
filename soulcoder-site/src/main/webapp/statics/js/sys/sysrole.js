@@ -142,7 +142,7 @@ var vm = new Vue({
                         };
                 $.ajax({
                     type: "POST",
-                    url: "/sys/role/add",
+                    url: "/sys/role/save",
                     dataType: "json",
                     data:JSON.stringify(data),
                     contentType:'application/json;charset=UTF-8',

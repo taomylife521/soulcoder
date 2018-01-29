@@ -8,6 +8,7 @@ import com.soulcoder.common.annotation.DataFilter;
 import com.soulcoder.dao.SysRoleDao;
 import com.soulcoder.pojo.SysRole;
 import com.soulcoder.requestdto.Req_AddRoleInfo;
+import com.soulcoder.requestdto.Req_DeleteRoleInfo;
 import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,17 @@ public class RoleServiceImpl implements IRoleService {
          return true;
      }
         return false;
+    }
+
+    /**
+    * 删除角色
+    */
+    public boolean delete(Req_DeleteRoleInfo request) {
+      int r=  roleDao.delete(request.roleId);
+      if(r>0){
+          return true;
+      }
+      return false;
     }
 
 
