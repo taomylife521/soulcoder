@@ -19,5 +19,12 @@ public interface SysMenuDao extends BaseDao<SysMenu>{
     * @param
     * @return
     */
-    public List<SysMenu> queryListByParentId(Integer parentId);
+     List<SysMenu> queryListByParentId(Integer parentId);
+
+    /**
+     * 根据用户id查询菜单列表
+     *
+     * @return list
+     */
+    List<SysMenu> queryMenuList(Object[] menuIdList);
 }

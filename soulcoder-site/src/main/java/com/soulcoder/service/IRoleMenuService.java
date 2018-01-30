@@ -8,5 +8,5 @@ import java.util.List;
  * Created by Aministrator on 2018-01-30.
  */
 public interface IRoleMenuService {
-    List<SysMenu> roleMenuTree();
+    List<SysMenu> roleMenuTree(Integer roleId,Integer deptId);
 }

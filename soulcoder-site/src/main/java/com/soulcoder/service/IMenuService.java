@@ -19,4 +19,11 @@ public interface IMenuService {
      * @return list
      */
     List<SysMenu> queryUserMenuList(Integer userId);
+
+    /**
+     * 根据用户id查询菜单列表
+     *
+     * @return list
+     */
+    List<SysMenu> queryMenuList(List<Integer> menuIdList);
 }

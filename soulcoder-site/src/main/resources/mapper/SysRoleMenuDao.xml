@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018.所有代码版权归编码者所有!
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.soulcoder.dao.SysRoleMenuDao" >
+
+    <select id="queryListByRoleId" resultType="int">
+        select menuid from sys_role_menu
+        <where>
+            <if test="roleid != null and roleid>0">roleid=#{roleid}</if>
+            <if test="deptid != null and deptid>0">roleid in (select id from sys_role where isdel=0 and deptid in(select id from  sys_dept where id=#{deptid} or parentid=#{deptid}))</if>
+        </where>
+    </select>
+</mapper>

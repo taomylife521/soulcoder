@@ -13,7 +13,7 @@ import java.util.List;
 public class SysMenu extends BaseEntity {
 
     private Integer parentid;
-    private String menuname;
+    private String name;
     private String icon;
     private String url;
     private Integer type;
@@ -21,7 +21,16 @@ public class SysMenu extends BaseEntity {
     private Integer sortnum;
     private Integer isdel;
     private Date createtime;
-    private List<?> list;
+    private Integer createby;
+
+    public Integer getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(Integer createby) {
+        this.createby = createby;
+    }
+        private List<?> list;
 
     public List<?> getList() {
         return list;
@@ -39,12 +48,12 @@ public class SysMenu extends BaseEntity {
         this.parentid = parentid;
     }
 
-    public String getMenuname() {
-        return menuname;
+    public String getName() {
+        return name;
     }
 
-    public void setMenuname(String menuname) {
-        this.menuname = menuname;
+    public void setName(String menuname) {
+        this.name = menuname;
     }
 
     public String getIcon() {

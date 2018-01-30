@@ -10,12 +10,15 @@ import com.soulcoder.common.validator.ModifyGroup;
 import com.soulcoder.common.validator.SaveGroup;
 import com.soulcoder.enums.ResponseStatus;
 import com.soulcoder.pojo.SysDept;
+import com.soulcoder.pojo.SysMenu;
 import com.soulcoder.pojo.SysRole;
 import com.soulcoder.requestdto.*;
 import com.soulcoder.responsedto.R;
 import com.soulcoder.responsedto.Res_QueryRoleTreeList;
+import com.soulcoder.responsedto.Res_RoleMenuTree;
 import com.soulcoder.responsedto.dtomodel.QueryRoleTreeDetail;
 import com.soulcoder.service.IDeptService;
+import com.soulcoder.service.IRoleMenuService;
 import com.soulcoder.service.IRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ public class RoleController extends  AbstractController {
 
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private IRoleMenuService roleMenuService;
 
     @Autowired
     private IDeptService deptService;
@@ -54,7 +59,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping("list")
     @ResponseBody
-   @RequiresPermissions("sys:role:list")
+  // @RequiresPermissions("sys:role:list")
     public R list(Req_RoleList request) {
         //校验实体
         R res = ValidatorUtils.validateEntity(request);
@@ -87,15 +92,19 @@ public class RoleController extends  AbstractController {
     /**
     * 获取角色对应的菜单和权限信息
     */
-    @RequestMapping("rolemenus")
+    @RequestMapping("rolemenutree")
     @ResponseBody
-    public R roleMenus(Req_RoleMenus request){
-        
-        return R.ok();
+    public R roleMenuTree(@RequestBody Req_RoleMenuTree request){
+        //校验实体
+        R res = ValidatorUtils.validateEntity(request);
+        if (res.getStatus() != ResponseStatus.Success.getIndex()) {
+            return res;
+        }
+        List<SysMenu> sysMenuList= roleMenuService.roleMenuTree(request.roleId,request.deptId);//如果部门id不为空，则他可以查看到他本部门和所有其他子部门的角色和权限
+        Res_RoleMenuTree roleMenuTree = new Res_RoleMenuTree();
+        roleMenuTree.setMenuTree(sysMenuList);
+        return R.ok(roleMenuTree);
     }
-
-
-
 
     /**
     * 修改角色信息

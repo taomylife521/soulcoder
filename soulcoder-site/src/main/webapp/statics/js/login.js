@@ -1,8 +1,8 @@
 var vm=new Vue({
 	el:"#loginbox",
 	data:{
-		username:"",
-		password:"",
+		username:"admin",
+		password:"admin",
 		error:false,
 		errormsg:"",
 		captchaObj:"",
@@ -23,14 +23,15 @@ var vm=new Vue({
 	methods:{
 		login:function(){
 			var result = vm.captchaObj.getValidate();	
-			if(result==null || result==undefined){
-				vm.error=true;
-				vm.errormsg="貌似还没有验证通过啊";
-				return;
-			}
+			// if(result==null || result==undefined){
+			// 	vm.error=true;
+			// 	vm.errormsg="貌似还没有验证通过啊";
+			// 	return;
+			// }
 			vm.error=false;
 			
-			var data="userName="+vm.username+"&password="+vm.password+"&geetest_challenge="+result.geetest_challenge+"&geetest_validate="+result.geetest_validate+"&geetest_seccode="+result.geetest_seccode;
+			//var data="userName="+vm.username+"&password="+vm.password+"&geetest_challenge="+result.geetest_challenge+"&geetest_validate="+result.geetest_validate+"&geetest_seccode="+result.geetest_seccode;
+            var data="userName="+vm.username+"&password="+vm.password;//"&geetest_challenge="+result.geetest_challenge+"&geetest_validate="+result.geetest_validate+"&geetest_seccode="+result.geetest_seccode;
 			$.ajax({
 				type:"POST",
 				url:"login",

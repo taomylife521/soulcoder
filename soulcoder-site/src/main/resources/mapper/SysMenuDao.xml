@@ -15,6 +15,12 @@
         select * from sys_menu where isdel=0 and parentid=#{parentId}
     </select>
 
+    <select id="queryMenuList" resultType="com.soulcoder.pojo.SysMenu">
+        select * from sys_menu where isdel=0 and id in
+        <foreach collection="array" item="menuId" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </select>
 
 
 </mapper>

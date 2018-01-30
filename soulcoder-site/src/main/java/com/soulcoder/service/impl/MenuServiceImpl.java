@@ -20,8 +20,10 @@ import java.util.List;
  */
 @Service
 public class MenuServiceImpl implements IMenuService{
+
     @Autowired
-    private SysMenuDao menuDao;
+    private SysMenuDao sysMenuDao;
+
     @Autowired
     private IUserService userService;
 
@@ -42,7 +44,14 @@ public class MenuServiceImpl implements IMenuService{
         return getAllMenuList(menuIdList);
     }
 
-     /**
+    /**
+    * 根据菜单id列表查询菜单列表
+    */
+    public List<SysMenu> queryMenuList(List<Integer> menuIdList) {
+       return sysMenuDao.queryMenuList(menuIdList.toArray());
+    }
+
+    /**
      * @Author:Aministrator
      * @Description:getallmenulist
      * @Date:16:34 2018-01-08
@@ -92,7 +101,7 @@ public class MenuServiceImpl implements IMenuService{
     */
     private List<SysMenu> queryListParentId(Integer parentId){
         try {
-            return menuDao.queryListByParentId(parentId);
+            return sysMenuDao.queryListByParentId(parentId);
         }
         catch (Exception ex)
         {
@@ -112,6 +121,7 @@ public class MenuServiceImpl implements IMenuService{
         for(SysMenu menu :menuList){
             if(menu.getType() == Constant.MenuType.CATALOG.getValue()){
                menu.setList(getMenuTreeList(queryListParentId(menu.getId(),menuIdList),menuIdList));
+
             }
             subMenuList.add(menu);
         }
@@ -120,6 +130,6 @@ public class MenuServiceImpl implements IMenuService{
 
 
     public List<SysMenu> queryList() {
-        return menuDao.queryList(null);
+        return sysMenuDao.queryList(null);
     }
 }

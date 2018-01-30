@@ -46,7 +46,7 @@ Vue.component('menuItem',{
         '   <ul v-if="item.type === 0" class="treeview-menu">',
         '     <menu-item :item="item" v-for="item in item.list"></menu-item>',
         '   </ul>',
-        '	 <a v-if="item.type === 1" :href="\'#\'+item.url"  ><i v-if="item.icon != null" :class="item.icon"></i><i v-else class="fa fa-circle-o"></i> {{item.menuname}}</a>',//v-on:click="menuItemClick"
+        '	 <a v-if="item.type === 1" :href="\'#\'+item.url"  ><i v-if="item.icon != null" :class="item.icon"></i><i v-else class="fa fa-circle-o"></i> {{item.name}}</a>',//v-on:click="menuItemClick"
         ' </li>'
     ].join('')
 });//注册菜单组件

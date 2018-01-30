@@ -3,6 +3,7 @@ package com.soulcoder.responsedto;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.soulcoder.pojo.SysMenu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,15 @@ import java.util.List;
  */
 public class Res_RoleMenuTree extends  ResponseBase{
 
+    public List<SysMenu> getMenuTree() {
+        return menuTree;
+    }
+
+    public void setMenuTree(List<SysMenu> menuTree) {
+        this.menuTree = menuTree;
+    }
+
     @JSONField(name="menuTree")
-    public List<SysMenu> menuTree;
+    private List<SysMenu> menuTree = new ArrayList<SysMenu>();
 
 }
