@@ -89,6 +89,17 @@ public class ShiroUtils {
 }
 
     /**
+     * 是否拥有该权限
+     * @param permission  权限标识
+     * @return   true：是     false：否
+     */
+    public static boolean hasPermission(String permission) {
+        Subject subject = SecurityUtils.getSubject();
+        return subject != null && subject.isPermitted(permission);
+    }
+
+
+    /**
      * 将一些数据放到ShiroSession中,以便于其它地方使用
      * @see 比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到
      */

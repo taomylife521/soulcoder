@@ -86,7 +86,7 @@ private  R(){}
     public static R exception(String errMsg,Exception exs,ResponseBase datas)
 	{
 		R r=new R();
-		r.status=ResponseStatus.Failed.getIndex();
+		r.status=ResponseStatus.Exception.getIndex();
 		r.errormsg=errMsg;
 		r.data=datas;
 		r.ex=exs;

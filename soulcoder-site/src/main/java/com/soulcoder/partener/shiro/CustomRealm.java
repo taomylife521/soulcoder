@@ -41,7 +41,7 @@ public class CustomRealm extends AuthorizingRealm {
 		SysUser user=(SysUser)principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		 HashSet<String> hashSet=new HashSet<String>();
-		hashSet.add("sys.role.list");
+		hashSet.add("sys:role:list");
 		//"sys.role.list"
 		info.setStringPermissions(hashSet);
 		return info;

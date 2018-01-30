@@ -53,8 +53,8 @@
 	<property name="filterChainDefinitions">
 		<value>
 			/login=anon
-			/sys**=authc
-			<!--/admin/listUser**=authc,perms[admin:manage]-->
+			/sys**=anon
+			<!--/admin/listUser**=authc,perms[admin:manage] authc-->
 		</value>
 	</property>
 </bean>  
@@ -67,7 +67,9 @@
 	<!-- 配置以下两个bean即可实现此功能 -->
 	<!-- Enable Shiro Annotations for Spring-configured beans. Only run after the lifecycleBeanProcessor has run -->
 	<!-- 由于本例中并未使用Shiro注解,故注释掉这两个bean(个人觉得将权限通过注解的方式硬编码在程序中,查看起来不是很方便,没必要使用) -->
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
 	  <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager"/>
 	  </bean>

@@ -5,7 +5,19 @@
  */
 Vue.config.devtools = true;
 
-
+//定义vue全局函数
+Vue.prototype.ajaxCallInterceptor=function(result){
+    var status=parseInt(result.status);
+    if(status==0){
+        swal(result.errormsg);
+        return false;
+    }
+    if(status == 2){//认证权限异常
+        location.href="/unauthor";
+        return false;
+    }
+    return true;
+}
 //部门树设置
 var deptTreeSettings = {
     view: {

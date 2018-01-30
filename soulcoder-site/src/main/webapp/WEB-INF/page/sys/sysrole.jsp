@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="row"  style="margin-top: 20px;">
                                         <div class="col-md-6 " >
-                                            <button  class="btn-primary form-control pull-right" style="width:65px" @click="modifyRoleInfo" >修改</button>
+                                                <button  class="btn-primary form-control pull-right" style="width:65px" @click="modifyRoleInfo" >修改</button>
                                         </div>
                                         <div class="col-md-6 " >
                                             <button  class="btn-info form-control" style="width:65px"  @click="addRoleInfo">新增</button>

@@ -54,7 +54,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping("list")
     @ResponseBody
-   @RequiresPermissions("sys.role.list")
+   @RequiresPermissions("sys:role:list")
     public R list(Req_RoleList request) {
         //校验实体
         R res = ValidatorUtils.validateEntity(request);
@@ -85,11 +85,24 @@ public class RoleController extends  AbstractController {
     }
 
     /**
+    * 获取角色对应的菜单和权限信息
+    */
+    @RequestMapping("rolemenus")
+    @ResponseBody
+    public R roleMenus(Req_RoleMenus request){
+        
+        return R.ok();
+    }
+
+
+
+
+    /**
     * 修改角色信息
     */
     @RequestMapping(value="modify",method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("sys.role.modify")
+    @RequiresPermissions("sys.role.modify")
     public R modify(@RequestBody Req_UpdateRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request, ModifyGroup.class);
@@ -117,7 +130,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping(value = "save",method = RequestMethod.POST)
     @ResponseBody
-//    @RequiresPermissions("sys.role.save")
+    @RequiresPermissions("sys.role.save")
     public R save(@RequestBody  Req_AddRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request, SaveGroup.class);
@@ -144,7 +157,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping("/delete")
     @ResponseBody
-//    @RequiresPermissions("sys.role.delete")
+    @RequiresPermissions("sys.role.delete")
     public R delete(@PathVariable Req_DeleteRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request);

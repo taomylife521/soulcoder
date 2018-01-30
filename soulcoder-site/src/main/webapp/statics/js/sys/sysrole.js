@@ -114,9 +114,8 @@ var vm = new Vue({
                     data:JSON.stringify(data),
                     contentType:'application/json;charset=UTF-8',
                     success: function (result) {
-                        if (parseInt(result.status) == 0) {
-                            swal("修改失败:" + result.errormsg);
-                            return;
+                        if(!vm.ajaxCallInterceptor(result)){
+                            return false;
                         }
                         swal("修改成功");
                         window.location.reload();
@@ -147,12 +146,19 @@ var vm = new Vue({
                     data:JSON.stringify(data),
                     contentType:'application/json;charset=UTF-8',
                     success: function (result) {
-                        if (parseInt(result.status) == 0) {
-                            swal(result.errormsg);
+                        if(!vm.ajaxCallInterceptor(result)){
                             vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
                             vm.selectedTreeNode("roleDeptTree","name",vm.roleName);
-                            return;
+                            return false;
                         }
+                        // if (parseInt(result.status) == 0) {
+                        //     swal(result.errormsg);
+                        //     vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                        //     vm.selectedTreeNode("roleDeptTree","name",vm.roleName);
+                        //     return;
+                        // }
+
+
                         //vm.loadRoleTreeList(true);
                         //vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
                         swal("添加成功");
@@ -241,10 +247,13 @@ var vm = new Vue({
                 dataType: "json",
                // data:data,
                 success: function (result) {
-                    if (result.status == 0) {
-                        console.log("获取部门失败:" + result);
-                        return;
+                    if(!vm.ajaxCallInterceptor(result)){
+                        return false;
                     }
+                    // if (result.status == 0) {
+                    //     console.log("获取部门失败:" + result);
+                    //     return;
+                    // }
                    // vm.roleTreeList=result.data.rolelist;
                     vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
                     vm.roleTreeSettings.view.fontCss=vm.getFontCss;
