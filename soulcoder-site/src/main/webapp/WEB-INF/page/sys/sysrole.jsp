@@ -234,7 +234,7 @@
 <%@include file="/WEB-INF/page/footer.jsp"%>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.core.js"></script>
-<%--<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.excheck.js"></script>--%>
+<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.excheck.js"></script>
 <%--<script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exedit.js"></script>--%>
 <script src="${path}/statics/adminlte/plugins/ztree/jquery.ztree.exhide.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.jquery.js"></script>
