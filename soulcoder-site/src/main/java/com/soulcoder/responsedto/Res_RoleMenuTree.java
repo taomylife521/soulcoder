@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Res_RoleMenuTree extends  ResponseBase{
 
+
     public List<SysMenu> getMenuTree() {
         return menuTree;
     }

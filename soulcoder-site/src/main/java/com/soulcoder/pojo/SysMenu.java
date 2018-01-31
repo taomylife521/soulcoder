@@ -22,6 +22,27 @@ public class SysMenu extends BaseEntity {
     private Integer isdel;
     private Date createtime;
     private Integer createby;
+    private Boolean isopen;
+    private Boolean isleaf;
+    public Boolean getIsleaf() {
+        return isleaf;
+    }
+
+    public void setIsleaf(Boolean isleaf) {
+        this.isleaf = isleaf;
+    }
+
+
+    public Boolean getIsopen() {
+        return isopen;
+    }
+
+    public void setIsopen(Boolean isopen) {
+        this.isopen = isopen;
+    }
+
+
+
 
     public Integer getCreateby() {
         return createby;

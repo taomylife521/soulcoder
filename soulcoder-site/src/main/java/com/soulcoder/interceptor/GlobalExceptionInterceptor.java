@@ -49,7 +49,7 @@ public class GlobalExceptionInterceptor implements HandlerExceptionResolver {
               if(ex instanceof org.apache.shiro.authz.UnauthorizedException){//如果拦截到时未认证异常
                 // httpServletResponse.sendRedirect("/unauthor");
                  // modelAndView.setViewName("redirect:/unauthor");
-                  result= R.exception("当前无权限操作，请联系管理员开通!",ex);
+                  result= R.exception("unauthor",ex);
                 //直接重定向到未认证页面
             }else {//系统代码异常
                   // 如果是ajax直接返回

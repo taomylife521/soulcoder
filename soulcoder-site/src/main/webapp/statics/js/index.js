@@ -38,7 +38,7 @@ Vue.component('menuItem',{
         '	 <li class="treeview">',
         '   <a v-if="item.type === 0" href="#">',
         '     <i v-if="item.icon != null":class="item.icon"></i>',
-        '      <span>{{item.menuname}}</span>',
+        '      <span>{{item.name}}</span>',
         '     <span class="pull-right-container">',
         '       <i class="fa fa-angle-left pull-right"></i>',
         '     </span>',

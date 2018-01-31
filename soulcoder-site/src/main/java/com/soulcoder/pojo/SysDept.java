@@ -54,6 +54,15 @@ public class SysDept extends  BaseEntity {
     */
     private transient String deptdescription;
 
+    private Boolean isleaf;
+    public Boolean getIsleaf() {
+        return isleaf;
+    }
+
+    public void setIsleaf(Boolean isleaf) {
+        this.isleaf = isleaf;
+    }
+
     public Integer getCreateby() {
         return createby;
     }

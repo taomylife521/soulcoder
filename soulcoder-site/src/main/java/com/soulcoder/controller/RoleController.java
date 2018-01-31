@@ -102,6 +102,26 @@ public class RoleController extends  AbstractController {
         }
         List<SysMenu> sysMenuList= roleMenuService.roleMenuTree(request.roleId,request.deptId);//如果部门id不为空，则他可以查看到他本部门和所有其他子部门的角色和权限
         Res_RoleMenuTree roleMenuTree = new Res_RoleMenuTree();
+        //for(SysMenu sysMenu; sysMenuList.iterator();)
+//        List<SysMenuMapper> menuMapperList = new ArrayList<SysMenuMapper>();
+//        for(Iterator<SysMenu> item=sysMenuList.iterator();item.hasNext();){
+//            SysMenu sysMenu=item.next();
+//            SysMenuMapper sysMenuMapper = new SysMenuMapper();
+//            sysMenuMapper.setCreateby(sysMenu.getCreateby());
+//            sysMenuMapper.setCreatetime(sysMenu.getCreatetime());
+//            sysMenuMapper.setIcon(sysMenu.getIcon());
+//            sysMenuMapper.setId(sysMenu.getId());
+//            sysMenuMapper.setIsdel(sysMenu.getIsdel());
+//            sysMenuMapper.setList(sysMenu.getList());
+//            sysMenuMapper.setName(sysMenu.getName());
+//            sysMenuMapper.setParentid(sysMenu.getParentid());
+//            sysMenuMapper.setPermissions(sysMenu.getPermissions());
+//            sysMenuMapper.setSortnum(sysMenu.getSortnum());
+//            sysMenuMapper.setType(sysMenu.getType());
+//            sysMenuMapper.setUrl(sysMenu.getUrl());
+//            sysMenuMapper.setChkDisabled(true);
+//            menuMapperList.add(sysMenuMapper);
+//        }
         roleMenuTree.setMenuTree(sysMenuList);
         return R.ok(roleMenuTree);
     }

@@ -10,8 +10,8 @@
     <select id="queryListByRoleId" resultType="int">
         select menuid from sys_role_menu
         <where>
-            <if test="roleid != null and roleid>0">roleid=#{roleid}</if>
-            <if test="deptid != null and deptid>0">roleid in (select id from sys_role where isdel=0 and deptid in(select id from  sys_dept where id=#{deptid} or parentid=#{deptid}))</if>
+            <if test="roleid != null and roleid>0"> and roleid=#{roleid}</if>
+            <if test="deptid != null and deptid>0"> and roleid in (select id from sys_role where isdel=0 and deptid in(select id from  sys_dept where id=#{deptid} or parentid=#{deptid}))</if>
         </where>
     </select>
 </mapper>

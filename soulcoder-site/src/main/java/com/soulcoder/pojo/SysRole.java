@@ -32,6 +32,14 @@ public class SysRole extends  BaseEntity {
 
     private Date createtime;
     private  Integer createby;
+    private Boolean isleaf;
+    public Boolean getIsleaf() {
+        return isleaf;
+    }
+
+    public void setIsleaf(Boolean isleaf) {
+        this.isleaf = isleaf;
+    }
 
     public int getOrdernum() {
         return ordernum;

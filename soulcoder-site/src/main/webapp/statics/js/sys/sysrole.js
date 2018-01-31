@@ -53,10 +53,6 @@ var vm = new Vue({
             check: {
                 enable: true
             },
-            key:{
-                name: "menuname",
-                title:"menuname"
-            },
             data: {
                 simpleData: {
                     enable: true,
@@ -214,11 +210,52 @@ var vm = new Vue({
                 vm.orderNum=treeNode.ordernum;
                 vm.selectedTreeNode("deptTree","id",vm.roleDeptId);//角色信息展示中的部门树默认选中
 
-               // vm.bindRoleMenuTree();//绑定角色授权树
+                vm.cacheAndBindMenuToRoleMenuTree();//绑定角色授权树
             }
 
         },
+        cacheAndBindMenuToRoleMenuTree:function(){
+           var roleMenuTreeData= vm.getRoleMenuZTreeData();
+           if(roleMenuTreeData!=null && roleMenuTreeData.length>0){
+                vm.bindMenuToRoleMenuTree(roleMenuTreeData);
+                return;
+           }
+            //请求服务端获取角色id对应的权限树
+            var roleId=vm.roleId;
+            var data={
+                "roleid":roleId,
+                "deptid":vm.roleDeptId
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sys/role/rolemenutree",
+                dataType: "json",
+                data:JSON.stringify(data),
+                contentType:'application/json;charset=UTF-8',
+                success: function (result) {
+                    if (!vm.ajaxCallInterceptor(result)) {
+                        return false;
+                    }
+                    //vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data.menuTree});//缓存角色id与菜单树的对应关系表
+                    //vm.initTree("menuTree", result.data.menuTree, vm.roleDeptId, vm.roleMenuTreeSettings,false);
+                    vm.roleIdMenuTreeMap.push({"roleId":roleId,"roleMenuTreeData":result.data.menuTree});
+                    vm.bindMenuToRoleMenuTree(result.data.menuTree);
 
+                }
+            });
+        },
+        bindMenuToRoleMenuTree:function(menuTreeData){
+            var ztree = vm.getZTreeInstance("menuTree");
+            ztree.checkAllNodes(false);
+            //选中菜单树
+            $.each(menuTreeData,function(i){
+                var menuId= menuTreeData[i].id;
+                var node = ztree.getNodeByParam("id", menuId);
+                if(node !=null) {
+                    ztree.checkNode(node, true, true);
+                }
+            });
+        },
         loadDeptRoleMenuTree:function(){
           // var menuTreeData=  vm.getRoleMenuZTreeData();
           // if(menuTreeData !=null){//说明没有缓存的值，则请求服务端获取
@@ -231,21 +268,19 @@ var vm = new Vue({
                      "deptid":parent.vm.user.deptid
                    }
           $.ajax({
-              type: "POST",
-              url: "/sys/role/rolemenutree",
-              dataType: "json",
-              data:JSON.stringify(data),
-              contentType:'application/json;charset=UTF-8',
-              success: function (result) {
-                  if (!vm.ajaxCallInterceptor(result)) {
-                      return false;
-                  }
-                  vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data.menuTree});//缓存角色id与菜单树的对应关系表
-                  vm.initTree("menuTree", result.data.menuTree, vm.roleDeptId, vm.roleMenuTreeSettings,false);
-              }
+                      type: "POST",
+                      url: "/sys/role/rolemenutree",
+                      dataType: "json",
+                      data:JSON.stringify(data),
+                      contentType:'application/json;charset=UTF-8',
+                      success: function (result) {
+                          if (!vm.ajaxCallInterceptor(result)) {
+                              return false;
+                          }
 
-
-
+                          vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data.menuTree});//缓存角色id与菜单树的对应关系表
+                          vm.initTree("menuTree", result.data.menuTree, vm.roleDeptId, vm.roleMenuTreeSettings,true);
+                      }
               });
 
         },
@@ -312,11 +347,7 @@ var vm = new Vue({
                     if(!vm.ajaxCallInterceptor(result)){
                         return false;
                     }
-                    // if (result.status == 0) {
-                    //     console.log("获取部门失败:" + result);
-                    //     return;
-                    // }
-                   // vm.roleTreeList=result.data.rolelist;
+
                     vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
                     vm.roleTreeSettings.view.fontCss=vm.getFontCss;
                     vm.initTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings);
@@ -335,7 +366,7 @@ var vm = new Vue({
                             minLength: 1
                         }, {limit: 3, source: vm.substringMatcher(vm.roleNameList)});//自动提示
                         // bind other two tree
-                        vm.initTree("deptTreeCopy", result.data.rolelist, vm.roleDeptId, deptTreeSettings,true);
+                       // vm.initTree("deptTreeCopy", result.data.rolelist, vm.roleDeptId, deptTreeSettings,true);
                         vm.initTree("deptTree", result.data.rolelist, vm.sRoleDeptId, deptTreeSettings,true);
                     }
 
@@ -351,7 +382,12 @@ var vm = new Vue({
            var nodes= ztree.getNodes();
            for(var i=0;i<nodes.length;i++){
                nodes[i].highlight=false;
-
+               var isleaf = nodes[i].isleaf==0 || nodes[i].isleaf=="false"?false:true
+               if(nodes[i].isopen && !isleaf){
+                   ztree.expandNode(nodes[i], true, true, true);
+               }else{
+                   ztree.expandNode(nodes[i], false, false, false);
+               }
               // nodes[i].open=nodes[i].isopen?true:false;
            }
             var node = ztree.getNodeByParam("id", selectedDeptId);//根据参数查询节点
@@ -413,7 +449,7 @@ var vm = new Vue({
         getRoleMenuZTreeData:function(){
             var menuTreeData=null;
             $.each(vm.roleIdMenuTreeMap,function(i){
-                if(vm.roleIdMenuTreeMap[i].roleid == vm.roleId){
+                if(vm.roleIdMenuTreeMap[i].roleId == vm.roleId){
                     menuTreeData= vm.roleIdMenuTreeMap[i].roleMenuTreeData;
                 }
             });

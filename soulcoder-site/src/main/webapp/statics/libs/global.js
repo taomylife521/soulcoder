@@ -13,7 +13,11 @@ Vue.prototype.ajaxCallInterceptor=function(result){
         return false;
     }
     if(status == 2){//认证权限异常
-        location.href="/unauthor";
+        if(result.errormsg.indexOf("unauthor") > -1) {
+            location.href = "/unauthor";
+        }else{
+            swal(result.errormsg);
+        }
         return false;
     }
     return true;
@@ -24,7 +28,7 @@ var deptTreeSettings = {
         selectedMulti: false
     },
     check: {
-        enable: false
+        enable: true
     },
     data: {
         simpleData: {
