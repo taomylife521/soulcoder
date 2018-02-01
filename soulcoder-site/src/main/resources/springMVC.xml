@@ -46,7 +46,7 @@
     <!-- 全局异常-->
     <bean class="com.soulcoder.interceptor.GlobalExceptionInterceptor"></bean>
      <!--默认静态自愿访问-->
-    <mvc:default-servlet-handler />
+    <!--<mvc:default-servlet-handler />-->
     	
    <!--  <context:property-placeholder location="classpath:log4j.properties" /> -->
 

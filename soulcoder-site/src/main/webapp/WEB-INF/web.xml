@@ -25,19 +25,20 @@
 
 
     <!-- 配置web.xml允许访问*.jpg -->
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.jpg</url-pattern>
-    </servlet-mapping>
-    <!-- 配置web.xml允许访问*.jpg -->
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>default</servlet-name>-->
+        <!--<url-pattern>*.jpg</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--&lt;!&ndash; 配置web.xml允许访问*.jpg &ndash;&gt;-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>default</servlet-name>-->
+        <!--<url-pattern>*.png</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
+
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>

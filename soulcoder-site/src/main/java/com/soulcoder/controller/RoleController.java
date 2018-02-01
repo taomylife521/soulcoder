@@ -211,6 +211,7 @@ public class RoleController extends  AbstractController {
         roleTreeDetail.setParentid(String.valueOf(dept.getParentid()));
         roleTreeDetail.setParentname(dept.getParentname());
         roleTreeDetail.setRole(false);
+        roleTreeDetail.setIsleaf(false);
         return roleTreeDetail;
     }
 
@@ -225,6 +226,7 @@ public class RoleController extends  AbstractController {
         roleTreeDetail.setParentid(String.valueOf(dept.getId()));
         roleTreeDetail.setParentname(dept.getName());
         roleTreeDetail.setRole(true);
+        roleTreeDetail.setIsleaf(true);
         return roleTreeDetail;
     }
 

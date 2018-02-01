@@ -114,5 +114,18 @@ public class QueryRoleTreeDetail {
      */
     private  String description;
 
+    public Boolean getIsleaf() {
+        return isleaf;
+    }
+
+    public void setIsleaf(Boolean isleaf) {
+        this.isleaf = isleaf;
+    }
+
+    /**
+     * 是否是叶子节点
+     */
+    private  Boolean isleaf;
+
 
 }
