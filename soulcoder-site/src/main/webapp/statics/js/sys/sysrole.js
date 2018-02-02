@@ -265,15 +265,19 @@ var vm = new Vue({
         },
         cacheAndBindMenuToRoleMenuTree:function(){
            var roleMenuTreeData= vm.getRoleMenuZTreeData();
-           if(roleMenuTreeData!=null && roleMenuTreeData.length>0){
-                vm.bindMenuToRoleMenuTree(roleMenuTreeData);
-                return;
+           if(roleMenuTreeData !=null) {
+               if (roleMenuTreeData.menutree != null) {
+                   vm.bindMenuToRoleTree("menuTree", roleMenuTreeData.menutree);//绑定菜单树
+               }
+               if (roleMenuTreeData.datatree != null) {
+                   vm.bindMenuToRoleTree("dataTree", roleMenuTreeData.datatree);//绑定数据权限树
+               }
+               return;
            }
             //请求服务端获取角色id对应的权限树
             var roleId=vm.roleId;
             var data={
-                "roleid":roleId,
-                "deptid":vm.roleDeptId
+                "roleid":roleId
             }
             $.ajax({
                 type: "POST",
@@ -285,40 +289,40 @@ var vm = new Vue({
                     if (!vm.ajaxCallInterceptor(result)) {
                         return false;
                     }
-                    //vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data.menuTree});//缓存角色id与菜单树的对应关系表
-                    //vm.initTree("menuTree", result.data.menuTree, vm.roleDeptId, vm.roleMenuTreeSettings,false);
-                    vm.roleIdMenuTreeMap.push({"roleId":roleId,"roleMenuTreeData":result.data.menuTree});
-                    vm.bindMenuToRoleMenuTree(result.data.menuTree);
+                    vm.roleIdMenuTreeMap.push({"roleId":roleId,"roleMenuTreeData":result.data});//缓存角色id与菜单树的对应关系表
+                    if(result.data.menutree!=null && result.data.menutree.length>0) {
+                        vm.bindMenuToRoleTree("menuTree", result.data.menutree);//绑定菜单树
+                    }
+                    if(result.data.datatree!=null && result.data.datatree.length>0) {
+                        vm.bindMenuToRoleTree("dataTree", result.data.datatree);//绑定数据权限树
+                    }
 
                 }
             });
         },
-        bindMenuToRoleMenuTree:function(menuTreeData){
-            var ztree = vm.getZTreeInstance("menuTree");
+        //绑定菜单到对应的角色树（角色菜单权限树，角色数据权限树）
+        bindMenuToRoleTree:function(roleTreeId,roleTreeData){
+            var ztree = vm.getZTreeInstance(roleTreeId);
             ztree.checkAllNodes(false);//取消所有选择的节点
             ztree.expandAll(false);//取消所有展开
             //选中菜单树
-            $.each(menuTreeData,function(i){
-                var menuId= menuTreeData[i].id;
-                var node = ztree.getNodeByParam("id", menuId);
+            $.each(roleTreeData,function(i){
+                var id= roleTreeData[i].id;
+                var node = ztree.getNodeByParam("id", id);
                 if(node !=null) {
                     ztree.checkNode(node, true, false);//选中节点
                     ztree.expandNode(node, true, false, true);
                 }
             });
         },
+
+        //初始化根据登录人的角色加载部门角色菜单树
         loadDeptRoleMenuTree:function(){
-          // var menuTreeData=  vm.getRoleMenuZTreeData();
-          // if(menuTreeData !=null){//说明没有缓存的值，则请求服务端获取
-          //     vm.initTree("menuTree",menuTreeData,vm.roleDeptId,vm.roleMenuTreeSettings);
-          //     return;
-          // }
           //请求服务端获取角色id对应的权限树
             var data={
-                     "roleid":"",
-                     "deptid":parent.vm.user.deptid
+                     "roleid":parent.vm.user.roleid,
                    }
-          $.ajax({
+             $.ajax({
                       type: "POST",
                       url: "/sys/role/rolemenutree",
                       dataType: "json",
@@ -328,9 +332,8 @@ var vm = new Vue({
                           if (!vm.ajaxCallInterceptor(result)) {
                               return false;
                           }
-
-                          vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data.menuTree});//缓存角色id与菜单树的对应关系表
-                          vm.initTree("menuTree", result.data.menuTree, vm.roleDeptId, vm.roleMenuTreeSettings,true);
+                          vm.roleIdMenuTreeMap.push({roleid: vm.roleId, roleMenuTreeData: result.data});//缓存角色id与菜单树的对应关系表
+                          vm.initTree("menuTree", result.data.menutree, vm.roleDeptId, vm.roleMenuTreeSettings,true);
                       }
               });
 
@@ -419,6 +422,7 @@ var vm = new Vue({
                         // bind other two tree
                        // vm.initTree("deptTreeCopy", result.data.rolelist, vm.roleDeptId, deptTreeSettings,true);
                         vm.initTree("deptTree", result.data.rolelist, vm.sRoleDeptId, deptTreeSettings,true);
+                        vm.initTree('dataTree',result.data.rolelist,parent.vm.user.deptid,vm.roleMenuTreeSettings,true);
                     }
 
 
@@ -481,11 +485,18 @@ var vm = new Vue({
             $.each(menuCheckedNodes,function(index){
                 menuIdArray.push(menuCheckedNodes[index].id);
             });
+            var zDataTree = vm.getZTreeInstance("dataTree");
+            var dataCheckedNodes= zDataTree.getCheckedNodes(true);//获取所有被选中数据权限的集合
+            var deptIdArray =[];
+            $.each(dataCheckedNodes,function(index){
+                deptIdArray.push(dataCheckedNodes[index].id);
+            });
 
             var data={
                 "roleid":vm.roleId,
                 "deptid":vm.roleDeptId,
-                "menuidlist":menuIdArray
+                "menuidlist":menuIdArray,
+                "deptidlist":deptIdArray
             }
             $.ajax({
                 type: "POST",

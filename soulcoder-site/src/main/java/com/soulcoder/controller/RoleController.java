@@ -18,6 +18,7 @@ import com.soulcoder.responsedto.Res_QueryRoleTreeList;
 import com.soulcoder.responsedto.Res_RoleMenuTree;
 import com.soulcoder.responsedto.dtomodel.QueryRoleTreeDetail;
 import com.soulcoder.service.IDeptService;
+import com.soulcoder.service.IRoleDeptService;
 import com.soulcoder.service.IRoleMenuService;
 import com.soulcoder.service.IRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,6 +41,9 @@ public class RoleController extends  AbstractController {
     private IRoleService roleService;
     @Autowired
     private IRoleMenuService roleMenuService;
+
+    @Autowired
+    private IRoleDeptService roleDeptService;
 
     @Autowired
     private IDeptService deptService;
@@ -100,29 +104,11 @@ public class RoleController extends  AbstractController {
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
             return res;
         }
-        List<SysMenu> sysMenuList= roleMenuService.roleMenuTree(request.roleId,request.deptId);//如果部门id不为空，则他可以查看到他本部门和所有其他子部门的角色和权限
+        List<SysMenu> sysMenuList= roleMenuService.roleMenuTree(request.roleId);//如果部门id不为空，则他可以查看到他本部门和所有其他子部门的角色和权限
+        List<Integer> deptIdList=roleDeptService.queryDeptIdList(request.roleId);
         Res_RoleMenuTree roleMenuTree = new Res_RoleMenuTree();
-        //for(SysMenu sysMenu; sysMenuList.iterator();)
-//        List<SysMenuMapper> menuMapperList = new ArrayList<SysMenuMapper>();
-//        for(Iterator<SysMenu> item=sysMenuList.iterator();item.hasNext();){
-//            SysMenu sysMenu=item.next();
-//            SysMenuMapper sysMenuMapper = new SysMenuMapper();
-//            sysMenuMapper.setCreateby(sysMenu.getCreateby());
-//            sysMenuMapper.setCreatetime(sysMenu.getCreatetime());
-//            sysMenuMapper.setIcon(sysMenu.getIcon());
-//            sysMenuMapper.setId(sysMenu.getId());
-//            sysMenuMapper.setIsdel(sysMenu.getIsdel());
-//            sysMenuMapper.setList(sysMenu.getList());
-//            sysMenuMapper.setName(sysMenu.getName());
-//            sysMenuMapper.setParentid(sysMenu.getParentid());
-//            sysMenuMapper.setPermissions(sysMenu.getPermissions());
-//            sysMenuMapper.setSortnum(sysMenu.getSortnum());
-//            sysMenuMapper.setType(sysMenu.getType());
-//            sysMenuMapper.setUrl(sysMenu.getUrl());
-//            sysMenuMapper.setChkDisabled(true);
-//            menuMapperList.add(sysMenuMapper);
-//        }
         roleMenuTree.setMenuTree(sysMenuList);
+        roleMenuTree.setDataTree(deptIdList);
         return R.ok(roleMenuTree);
     }
 

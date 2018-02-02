@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018.所有代码版权归编码者所有!
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.soulcoder.dao.SysRoleDeptDao">
+<select id="queryDeptIdList" resultType="java.lang.Integer">
+    select deptid from sys_role_dept where roleid=#{roleid}
+</select>
+
+    <insert id="save">
+        insert into sys_role_dept
+        (
+          roleid,
+          deptid
+        )
+        VALUES
+        <foreach collection="deptIdList" item="deptId" separator="," >
+            (
+              #{roleid},
+              #{deptId}
+            )
+        </foreach>
+    </insert>
+</mapper>

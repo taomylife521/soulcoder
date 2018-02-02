@@ -20,7 +20,28 @@ public class Res_RoleMenuTree extends  ResponseBase{
         this.menuTree = menuTree;
     }
 
-    @JSONField(name="menuTree")
+
+
+    public List<Integer> getDataTree() {
+        return dataTree;
+    }
+
+    public void setDataTree(List<Integer> dataTree) {
+        this.dataTree = dataTree;
+    }
+
+    /**
+     * 角色对应的菜单权限列表
+     */
+    @JSONField(name="menutree")
     private List<SysMenu> menuTree = new ArrayList<SysMenu>();
+
+
+
+    /**
+    * 角色对应的部门id列表数据权限
+    */
+    @JSONField(name="datatree")
+    private List<Integer> dataTree = new ArrayList<Integer>();
 
 }

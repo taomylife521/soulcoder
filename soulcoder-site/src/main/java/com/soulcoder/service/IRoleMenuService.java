@@ -11,7 +11,7 @@ public interface IRoleMenuService {
     /**
     * 查询某个部门角色对应的菜单树
     */
-    List<SysMenu> roleMenuTree(Integer roleId,Integer deptId);
+    List<SysMenu> roleMenuTree(Integer roleId);
 
     Boolean saveOrUpdateRoleMenuTree(Integer roleId,List<Integer> menuIdList);
 }

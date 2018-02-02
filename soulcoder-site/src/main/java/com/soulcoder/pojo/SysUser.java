@@ -49,6 +49,34 @@ public class SysUser extends BaseEntity {
      */
     private String deptName;
 
+    public Integer getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(Integer createby) {
+        this.createby = createby;
+    }
+
+    public Integer getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
+    }
+
+    public Integer getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(Integer rolename) {
+        this.rolename = rolename;
+    }
+
+    private Integer roleid;
+
+    private Integer rolename;
+
     public String getEmail() {
         return email;
     }

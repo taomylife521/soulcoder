@@ -14,6 +14,6 @@ public class Req_RoleMenuTree extends  RequestBase {
     /**
     * 部门id，可以查看部门id 下所有角色对应的权限
     */
-    @JSONField(name="deptid")
-    public Integer deptId;
+//    @JSONField(name="deptid")
+//    public Integer deptId;
 }
