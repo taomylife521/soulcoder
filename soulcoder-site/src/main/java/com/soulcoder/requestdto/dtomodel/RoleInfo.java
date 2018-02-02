@@ -19,7 +19,7 @@ public class RoleInfo extends RequestBase {
     @JSONField(name="roledescription")
     public String roleDescription;
 
-    @NotBlank(message = "角色所在部门不能为空",groups= {SaveGroup.class, ModifyGroup.class})
+    @NotNull(message = "角色所在部门不能为空",groups= {SaveGroup.class, ModifyGroup.class})
     @JSONField(name="roledeptid")
     public Integer roleDeptId;
 
@@ -27,7 +27,7 @@ public class RoleInfo extends RequestBase {
     @JSONField(name="roledeptname")
     public String roleDeptName;
 
-    @NotBlank(message = "角色排序号不能为空",groups= {SaveGroup.class, ModifyGroup.class})
+    @NotNull(message = "角色排序号不能为空",groups= {SaveGroup.class, ModifyGroup.class})
     @JSONField(name="ordernum")
     public Integer orderNum;
 

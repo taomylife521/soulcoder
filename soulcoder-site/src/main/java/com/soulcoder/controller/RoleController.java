@@ -143,8 +143,8 @@ public class RoleController extends  AbstractController {
         req.setRoleName(request.roleName);
         req.setDeptId(request.roleDeptId);
         List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
-        if(roleList.size() > 0){
-            return R.failed("当前部门下已存在该角色");
+        if(roleList.size() <= 0){
+            return R.failed("当前部门下已不存在该角色");
         }
         boolean r=roleService.update(request);
         if(r) {
@@ -159,7 +159,7 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping(value = "save",method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("sys.role.save")
+//    @RequiresPermissions("sys.role.save")
     public R save(@RequestBody  Req_AddRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request, SaveGroup.class);
@@ -199,7 +199,7 @@ public class RoleController extends  AbstractController {
         req.setDeptId(request.deptId);
         List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
         if(roleList.size() <= 0){
-            return R.failed("当前部门下已不存在该角色,请重新选择正确的角色!");
+            return R.failed("当前部门下不存在该角色,请先添加该角色再授权!");
         }
         boolean r= roleMenuService.saveOrUpdateRoleMenuTree(request.roleId,request.menuIdList);
         if(!r){
@@ -213,14 +213,22 @@ public class RoleController extends  AbstractController {
     */
     @RequestMapping("/delete")
     @ResponseBody
-    @RequiresPermissions("sys.role.delete")
-    public R delete(@PathVariable Req_DeleteRoleInfo request){
+//    @RequiresPermissions("sys.role.delete")
+    public R delete(@RequestBody Req_DeleteRoleInfo request){
         //校验实体
         R res = ValidatorUtils.validateEntity(request);
         if (res.getStatus() != ResponseStatus.Success.getIndex()) {
             return res;
         }
-        boolean r=roleService.delete(request);
+        //先查询当前部门下有没有该角色，有的话直接返回失败，没有则添加
+        Req_RoleList req = new Req_RoleList();
+        req.setRoleId(request.roleId);
+        req.setDeptId(request.deptId);
+        List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
+        if(roleList.size() <= 0){
+            return R.failed("当前部门下已不存在该角色!");
+        }
+        boolean r=roleService.delete(request.roleId);
         if(r){
             return R.ok();
         }

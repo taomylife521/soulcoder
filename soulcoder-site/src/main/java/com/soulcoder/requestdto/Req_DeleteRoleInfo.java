@@ -14,5 +14,9 @@ public class Req_DeleteRoleInfo extends RequestBase {
     */
     @NotNull
     @JSONField(name="roleid")
-    public int roleId;
+    public Integer roleId;
+
+    @NotNull
+    @JSONField(name="deptid")
+    public Integer deptId;
 }

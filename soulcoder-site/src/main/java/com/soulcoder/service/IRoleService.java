@@ -2,7 +2,6 @@ package com.soulcoder.service;
 
 import com.soulcoder.pojo.SysRole;
 import com.soulcoder.requestdto.Req_AddRoleInfo;
-import com.soulcoder.requestdto.Req_DeleteRoleInfo;
 import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 
 import java.util.List;
@@ -48,5 +47,5 @@ public interface IRoleService {
      * @param
      * @return
      */
-    boolean delete(Req_DeleteRoleInfo request);
+    boolean delete(Integer roleId);
 }

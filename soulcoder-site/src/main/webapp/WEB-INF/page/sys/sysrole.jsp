@@ -136,12 +136,15 @@
                                     </div>
                                     <div class="row"  style="margin-top: 20px;">
                                         <div class="col-md-6 " >
+                                            <button  class="btn-info form-control pull-right" style="width:65px"  @click="addRoleInfo">新增</button>
+                                        </div>
+                                        <div class="col-md-1 " v-if="roleId>0">
                                                 <button  class="btn-primary form-control pull-right" style="width:65px" @click="modifyRoleInfo" >修改</button>
                                         </div>
-                                        <div class="col-md-6 " >
-                                            <button  class="btn-info form-control" style="width:65px"  @click="addRoleInfo">新增</button>
-                                        </div>
 
+                                        <div class="col-md-5 " v-if="roleId>0">
+                                            <button  class="btn-danger form-control" style="width:65px;margin-left: 10px;"  @click="deleteRoleInfo">删除</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.tab-pane -->
@@ -177,7 +180,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row" v-if="roleId>0">
                                         <button  class="btn-info form-control" style="width:65px"  @click="updateRoleMenuTree">授权</button>
                                     </div>
                                 </div>

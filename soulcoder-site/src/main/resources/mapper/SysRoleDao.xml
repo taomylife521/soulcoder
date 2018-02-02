@@ -73,7 +73,9 @@
         where id=#{id}
     </update>
 
-
+<delete id="delete">
+    delete from sys_role where id=#{value}
+</delete>
 
 
 </mapper>

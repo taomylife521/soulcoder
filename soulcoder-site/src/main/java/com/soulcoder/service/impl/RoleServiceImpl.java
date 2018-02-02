@@ -6,6 +6,7 @@ package com.soulcoder.service.impl;
 
 import com.soulcoder.common.annotation.DataFilter;
 import com.soulcoder.dao.SysRoleDao;
+import com.soulcoder.dao.SysRoleMenuDao;
 import com.soulcoder.pojo.SysRole;
 import com.soulcoder.requestdto.Req_AddRoleInfo;
 import com.soulcoder.requestdto.Req_DeleteRoleInfo;
@@ -13,6 +14,7 @@ import com.soulcoder.requestdto.Req_UpdateRoleInfo;
 import com.soulcoder.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,9 @@ public class RoleServiceImpl implements IRoleService {
 
     @Autowired
     private SysRoleDao roleDao;
+
+    @Autowired
+    private SysRoleMenuDao roleMenuDao;
     public void correlationPermissions(Long roleId, Long... permissionIds) {
 
     }
@@ -52,11 +57,11 @@ public class RoleServiceImpl implements IRoleService {
         SysRole role = new SysRole();
         role.setCreateby(request.loginId);
         role.setCreatetime(new Date());
-        role.setDeptid(request.roleDeptId);
+        role.setDeptid(Integer.valueOf(request.roleDeptId));
         role.setDeptname(request.roleDeptName);
         role.setIsdel(0);
         role.setIsopen(true);
-        role.setOrdernum(request.orderNum);
+        role.setOrdernum(Integer.valueOf(request.orderNum));
         role.setRoledescription(request.roleDescription);
         role.setRolename(request.roleName);
         roleDao.save(role);//添加角色到部门
@@ -91,12 +96,11 @@ public class RoleServiceImpl implements IRoleService {
     /**
     * 删除角色
     */
-    public boolean delete(Req_DeleteRoleInfo request) {
-      int r=  roleDao.delete(request.roleId);
-      if(r>0){
-          return true;
-      }
-      return false;
+    @Transactional
+    public boolean delete(Integer roleId) {
+      roleDao.delete(roleId);
+      roleMenuDao.delete(roleId);
+      return true;
     }
 
 

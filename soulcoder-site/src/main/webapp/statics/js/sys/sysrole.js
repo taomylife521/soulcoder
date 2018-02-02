@@ -10,10 +10,10 @@ var vm = new Vue({
     data:{
         deptRoleList:{},//部门角色列表
         roleName:'',//角色名称
-        roleDeptId:'',//角色部门id
+        roleDeptId:-1,//角色部门id
         roleDeptName:'',//角色部门id
         roleDescription:'',//角色描述
-        roleId:'',
+        roleId:-1,
         orderNum:'',
         sRoleName:'',//要查询的角色名称
         // sRoleDeptId:'',//要查询的角色部门id
@@ -192,6 +192,55 @@ var vm = new Vue({
                 });
 
             });
+        },
+
+        //删除角色信息
+        deleteRoleInfo:function(){
+
+            swal({
+                title: "确定删除吗？",
+                         text: "一旦删除该角色，该角色对应的菜单权限也会一并删除!",
+                         type: "warning",
+                         showCancelButton: true,
+                         confirmButtonColor: "#DD6B55",
+                         confirmButtonText: "确定删除！",
+                         closeOnConfirm: false,
+                         buttons: true,
+                         dangerMode: true,
+                     })
+                .then((willDelete) => {
+                        if (!willDelete) {
+                          return;
+                        }
+                        var data={
+                            "roleid":vm.roleId,
+                            "deptid":vm.roleDeptId
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "/sys/role/delete",
+                            dataType: "json",
+                            data:JSON.stringify(data),
+                            contentType:'application/json;charset=UTF-8',
+                            success: function (result) {
+                                if(!vm.ajaxCallInterceptor(result)){
+                                    return false;
+                                }
+                                vm.removeTreeNode("roleDeptTree","id",vm.roleId);//移除节点
+                                vm.roleId=-1;
+                                vm.roleDeptId=-1;
+                                var ztree = vm.getZTreeInstance("menuTree");
+                                ztree.checkAllNodes(false);//取消所有选择的节点
+                                ztree.expandAll(true);//取消所有展开
+                                vm.roleDeptName='';
+                                vm.roleName='';
+                                vm.roleDescription='';
+                                swal("删除成功");
+                            }
+                        });
+            });
+
+
         },
 
         getFontCss: function (treeId, treeNode) {
@@ -411,6 +460,16 @@ var vm = new Vue({
                     ztree.selectNode(node);
                     ztree.expandNode(node, true, true, true);
                 }
+
+        },
+
+        //移除树中的某个节点id
+        removeTreeNode:function(treeElementId,selectedProp,selectedPropValue){
+            var ztree = vm.getZTreeInstance(treeElementId);
+            var node = ztree.getNodeByParam(selectedProp, selectedPropValue);//根据父框架vm的user对象去查值
+            if (node != null) {//如果节点不为空则选中
+                ztree.removeNode(node);
+            }
 
         },
 
