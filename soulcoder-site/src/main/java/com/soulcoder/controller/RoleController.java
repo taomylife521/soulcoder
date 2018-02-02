@@ -182,6 +182,33 @@ public class RoleController extends  AbstractController {
     }
 
     /**
+     * 更新角色菜单信息，统一先删除，再添加
+     */
+    @RequestMapping(value = "updaterolemenutree",method = RequestMethod.POST)
+    @ResponseBody
+   // @RequiresPermissions("sys.role.updaterolemenutree")
+    public R updaterolemenutree(@RequestBody Req_UpdateRoleMenuTree request){
+        //校验实体
+        R res = ValidatorUtils.validateEntity(request, SaveGroup.class);
+        if (res.getStatus() != ResponseStatus.Success.getIndex()) {
+            return res;
+        }
+        //先查询当前部门下有没有该角色，有的话直接返回失败，没有则添加
+        Req_RoleList req = new Req_RoleList();
+        req.setRoleId(request.roleId);
+        req.setDeptId(request.deptId);
+        List<SysRole> roleList = roleService.queryList(EntityToMapUtils.convertToMap(req));
+        if(roleList.size() <= 0){
+            return R.failed("当前部门下已不存在该角色,请重新选择正确的角色!");
+        }
+        boolean r= roleMenuService.saveOrUpdateRoleMenuTree(request.roleId,request.menuIdList);
+        if(!r){
+            return R.failed("更新失败");
+        }
+        return R.ok();
+    }
+
+    /**
     * 删除角色
     */
     @RequestMapping("/delete")

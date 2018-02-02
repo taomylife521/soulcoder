@@ -19,5 +19,10 @@ public @interface DataFilter {
 
     /** true 没有本部门数据权限,也能查询本人数据*/
     boolean user() default  true;
+    
+    /**
+    * 是否要忽略拼接的部门id
+    */
+    boolean isIgnoreDeptId() default false;
 
 }

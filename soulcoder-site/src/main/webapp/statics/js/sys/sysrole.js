@@ -246,13 +246,15 @@ var vm = new Vue({
         },
         bindMenuToRoleMenuTree:function(menuTreeData){
             var ztree = vm.getZTreeInstance("menuTree");
-            ztree.checkAllNodes(false);
+            ztree.checkAllNodes(false);//取消所有选择的节点
+            ztree.expandAll(false);//取消所有展开
             //选中菜单树
             $.each(menuTreeData,function(i){
                 var menuId= menuTreeData[i].id;
                 var node = ztree.getNodeByParam("id", menuId);
                 if(node !=null) {
-                    ztree.checkNode(node, true, true);
+                    ztree.checkNode(node, true, false);//选中节点
+                    ztree.expandNode(node, true, false, true);
                 }
             });
         },
@@ -350,7 +352,7 @@ var vm = new Vue({
 
                     vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
                     vm.roleTreeSettings.view.fontCss=vm.getFontCss;
-                    vm.initTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings);
+                    vm.initTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings,true);
                     if(!isOnlyInitRoleTree) {
                         for (var key = 0; key < result.data.rolelist.length; key++) {//去除所有的角色只留部门
                             if (result.data.rolelist[key].role == true) {
@@ -412,16 +414,36 @@ var vm = new Vue({
 
         },
 
-        //搜索条件上面的部门树
-        confirmDeptCopy:function(){
-          // var ztree= vm.ztrees[$("#deptTreeCopy")]
-            var ztree= vm.getZTreeInstance("deptTreeCopy");
-            var node = ztree.getSelectedNodes();//获取选中的节点赋值到文本框中
-            //选择上级部门
-            vm.sRoleDeptId = node[0].id;
-            vm.sRoleDeptName = node[0].name;
-            $('#myModalCopy').modal('hide');
+        //给角色授权
+        updateRoleMenuTree:function(){
+            var ztree = vm.getZTreeInstance("menuTree");
+           var menuCheckedNodes= ztree.getCheckedNodes(true);//获取所有被选中菜单的集合
+            var menuIdArray =[];
+            $.each(menuCheckedNodes,function(index){
+                menuIdArray.push(menuCheckedNodes[index].id);
+            });
+
+            var data={
+                "roleid":vm.roleId,
+                "deptid":vm.roleDeptId,
+                "menuidlist":menuIdArray
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sys/role/updaterolemenutree",
+                dataType: "json",
+                 data:JSON.stringify(data),
+                contentType:'application/json;charset=UTF-8',
+                success: function (result) {
+                    if(!vm.ajaxCallInterceptor(result)){
+                        return false;
+                    }
+                    swal("更新成功");
+                }
+            });
         },
+
+
 
         //确认该部门
         confirmDept: function () {

@@ -34,7 +34,7 @@ public class RoleServiceImpl implements IRoleService {
 
     }
 
-    @DataFilter(tableAlias = "r", user = false)
+    @DataFilter(tableAlias = "r", user = false,isIgnoreDeptId = true)
     public List<SysRole> queryList(Map<String, Object> map) {
         return roleDao.queryList(map);
     }

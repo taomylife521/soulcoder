@@ -14,4 +14,22 @@
             <if test="deptid != null and deptid>0"> and roleid in (select id from sys_role where isdel=0 and deptid in(select id from  sys_dept where id=#{deptid} or parentid=#{deptid}))</if>
         </where>
     </select>
+
+    <delete id="delete">
+        delete from sys_role_menu where roleid=#{value}
+    </delete>
+
+    <insert id="save">
+        insert into sys_role_menu
+        (
+        `roleid`,
+        `menuid`
+        )VALUES
+        <foreach collection="menuIdList" item="menuItem" index="index" separator=",">
+            (
+              #{roleId},
+              #{menuItem}
+            )
+        </foreach>
+    </insert>
 </mapper>

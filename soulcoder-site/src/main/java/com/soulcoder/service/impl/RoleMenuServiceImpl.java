@@ -6,6 +6,7 @@ import com.soulcoder.pojo.SysMenu;
 import com.soulcoder.service.IRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -30,5 +31,23 @@ public class RoleMenuServiceImpl implements IRoleMenuService {
         }
 
         return menuDao.queryMenuList(menuIdList.toArray());
+    }
+
+    
+    /**
+    * 保存或更新角色菜单树
+    */
+    @Transactional
+    public Boolean saveOrUpdateRoleMenuTree(Integer roleId, List<Integer> menuIdList) {
+        roleMenuDao.delete(roleId);
+        if(menuIdList.size()<=0){
+            return true;
+        }
+        //保存角色与菜单关系
+        Map<String, Object> map = new HashMap<String,Object>();
+        map.put("roleId", roleId);
+        map.put("menuIdList", menuIdList);
+        roleMenuDao.save(map);
+        return true;
     }
 }

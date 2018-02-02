@@ -15,6 +15,9 @@
             <if test="roleName!=null">
               and  rolename=#{roleName}
             </if>
+            <if test="roleId !=null and roleId>0">
+                and  id=#{roleId}
+            </if>
             <if test="deptId>0">
                and deptid=#{deptId}
             </if>

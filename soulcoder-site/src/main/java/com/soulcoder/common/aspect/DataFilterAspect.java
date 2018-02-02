@@ -68,16 +68,17 @@ public class DataFilterAspect {
         if(StringUtils.isNoneBlank(tableAlias)){
             tableAlias+=".";
         }
-        //获取子部门ID
-        String subDeptIds = sysDeptService.getSubDeptIdList(user.getDeptid());
-
         StringBuilder filterSql = new StringBuilder();
-        filterSql.append("and (");
-        filterSql.append(tableAlias).append("dept_id in(").append(subDeptIds).append(")");
-
+        filterSql.append("and ( 1=1 ");
+        if(!dataFilter.isIgnoreDeptId()) {
+            //获取子部门ID
+            String subDeptIds = sysDeptService.getSubDeptIdList(user.getDeptid());
+            filterSql.append("and ( ");
+            filterSql.append(tableAlias).append("deptid in(").append(subDeptIds).append(")");
+        }
         //没有本部门数据权限，也能查询本人数据
         if(dataFilter.user()){
-            filterSql.append(" or ").append(tableAlias).append("user_id=").append(user.getId());
+            filterSql.append(" or ").append(tableAlias).append("userid=").append(user.getId());
         }
         filterSql.append(")");
 

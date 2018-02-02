@@ -146,17 +146,39 @@
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="rolepermission">
-                                    <div class="form-group col-md-6">
-                                        <strong class="col-sm-5 control-label">功能权限</strong>
-                                        <div class="col-sm-10">
-                                            <ul id="menuTree" class="ztree"></ul>
+                                    <div class="row">
+                                        <p class="control has-icon has-icon-right">
+                                            <div class="col-md-6">
+                                                <label>角色名称:</label>
+                                                <input type="text" readonly="readonly"  v-validate="'required'" name="roleName" placeholder="角色名称"  class="form-control" v-model="roleName" :roleId="roleId"/>
+                                             </div>
+                                        <div class="col-md-6">
+                                            <label>角色部门:</label>
+                                            <input type="text" readonly="readonly"    name="roleDeptName"   v-model="roleDeptName"  :deptId="roleDeptId" class="form-control" />
+                                        </div>
+                                        </p>
+                                        <p class="control has-icon has-icon-right">
+
+
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <strong class="col-sm-5 control-label">功能权限</strong>
+                                            <div class="col-sm-10">
+                                                <ul id="menuTree" class="ztree"></ul>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <strong class="col-sm-5 control-label">数据权限</strong>
+                                            <div class="col-sm-10">
+                                                <ul id="dataTree" class="ztree"></ul>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <strong class="col-sm-5 control-label">数据权限</strong>
-                                        <div class="col-sm-10">
-                                            <ul id="dataTree" class="ztree"></ul>
-                                        </div>
+
+                                    <div class="row">
+                                        <button  class="btn-info form-control" style="width:65px"  @click="updateRoleMenuTree">授权</button>
                                     </div>
                                 </div>
                             </div>
@@ -192,27 +214,7 @@
         </div>
     </div>
 
-  <%--<!--部门树弹框-->--%>
-    <%--<div class="modal fade" id="myModalCopy" style="display: none" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
-      <%--<div class="modal-dialog" role="document">--%>
-          <%--<div class="modal-content">--%>
-              <%--<div class="modal-header">--%>
-                  <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
-                  <%--<h4 class="modal-title" >部门列表</h4>--%>
-              <%--</div>--%>
-              <%--<div class="modal-body">--%>
-                  <%--<!-- 部门列表 -->--%>
-                  <%--<div class="zTreeDemoBackground">--%>
-                      <%--<ul id="deptTreeCopy" name="deptTree" style="width: auto;" class="ztree"></ul>--%>
-                  <%--</div>--%>
-              <%--</div>--%>
-              <%--<div class="modal-footer">--%>
-                  <%--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>--%>
-                  <%--<button type="button" class="btn btn-primary" @click="confirmDeptCopy" >确定</button>--%>
-              <%--</div>--%>
-          <%--</div>--%>
-      <%--</div>--%>
-  <%--</div>--%>
+
 
 </div>
 
