@@ -19,9 +19,13 @@
         VALUES
         <foreach collection="deptIdList" item="deptId" separator="," >
             (
-              #{roleid},
+              #{roleId},
               #{deptId}
             )
         </foreach>
     </insert>
+
+    <delete id="delete">
+        delete from sys_role_dept where roleid=#{value}
+    </delete>
 </mapper>

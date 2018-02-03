@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/demo.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/typeahead/example.css">
+    <%--<link rel="stylesheet" href="${path}/statics/adminlte/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css">--%>
     <link rel="stylesheet" href="${path}/statics/libs/vee-validate/vee-validate.css">
 
     <style>
@@ -61,6 +62,7 @@
                                     <div class="form-group">
                                         <label>角色名称:</label>
                                         <input type="text" placeholder="角色名称" @change="filterByRoleName" v-model="sRoleName"  id="scrollable-dropdown-menu" data-provide="typeahead"   class="typeahead form-control"/>
+
                                     </div>
 
                                 </div>
@@ -108,6 +110,7 @@
                                             <input type="text"  v-validate="'required'" name="roleName" placeholder="角色名称" :class="{'input': true, 'is-danger': errors.has('roleName') }" class="form-control" v-model="roleName" :roleId="roleId"/>
                                              <i v-show="errors.has('roleName')" class="fa fa-warning"></i>
                                             <span v-show="errors.has('roleName')" class="help is-danger">{{ errors.first('roleName') }}</span>
+
                                         </p>
                                     </div>
                                     <div class="row">
@@ -245,7 +248,7 @@
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.jquery.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/handlebars.js"></script>
 <script src="${path}/statics/adminlte/plugins/typeahead/typeahead.bundle.js"></script>
-
+<%--<link rel="stylesheet" href="${path}/statics/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js">--%>
 <script src="${path}/statics/libs/vee-validate/vee-validate.js"></script>
 <script src="${path}/statics/libs/vee-validate/locale/zh_CN.js"></script><!--该js必须在vee-validate.js后面-->
 

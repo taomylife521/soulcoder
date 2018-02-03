@@ -83,6 +83,7 @@ var vm = new Vue({
         // });
         // this.$set(this, 'errors', this.validator.errors);
         this.$validator.localize('zh_CN');
+
         //this.loadDeptList();
 
     },
@@ -264,6 +265,13 @@ var vm = new Vue({
 
         },
         cacheAndBindMenuToRoleMenuTree:function(){
+            //先重置所有树为初始状态
+            var dataTree = vm.getZTreeInstance("dataTree");
+            dataTree.checkAllNodes(false);//取消所有选择的节点
+            dataTree.expandAll(false);//取消所有展开
+            var menuTree = vm.getZTreeInstance("menuTree");
+            menuTree.checkAllNodes(false);//取消所有选择的节点
+            menuTree.expandAll(false);//取消所有展开
            var roleMenuTreeData= vm.getRoleMenuZTreeData();
            if(roleMenuTreeData !=null) {
                if (roleMenuTreeData.menutree != null) {
@@ -303,8 +311,8 @@ var vm = new Vue({
         //绑定菜单到对应的角色树（角色菜单权限树，角色数据权限树）
         bindMenuToRoleTree:function(roleTreeId,roleTreeData){
             var ztree = vm.getZTreeInstance(roleTreeId);
-            ztree.checkAllNodes(false);//取消所有选择的节点
-            ztree.expandAll(false);//取消所有展开
+            //ztree.checkAllNodes(false);//取消所有选择的节点
+           // ztree.expandAll(false);//取消所有展开
             //选中菜单树
             $.each(roleTreeData,function(i){
                 var id= roleTreeData[i].id;

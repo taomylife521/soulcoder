@@ -13,5 +13,5 @@ public interface IRoleMenuService {
     */
     List<SysMenu> roleMenuTree(Integer roleId);
 
-    Boolean saveOrUpdateRoleMenuTree(Integer roleId,List<Integer> menuIdList);
+    Boolean saveOrUpdateRoleMenuTree(Integer roleId,List<Integer> menuIdList,List<Integer> deptIdList);
 }

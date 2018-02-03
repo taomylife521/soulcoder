@@ -9,6 +9,7 @@ import com.soulcoder.common.utils.ValidatorUtils;
 import com.soulcoder.common.validator.ModifyGroup;
 import com.soulcoder.common.validator.SaveGroup;
 import com.soulcoder.enums.ResponseStatus;
+import com.soulcoder.pojo.BaseEntity;
 import com.soulcoder.pojo.SysDept;
 import com.soulcoder.pojo.SysMenu;
 import com.soulcoder.pojo.SysRole;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -106,9 +108,15 @@ public class RoleController extends  AbstractController {
         }
         List<SysMenu> sysMenuList= roleMenuService.roleMenuTree(request.roleId);//如果部门id不为空，则他可以查看到他本部门和所有其他子部门的角色和权限
         List<Integer> deptIdList=roleDeptService.queryDeptIdList(request.roleId);
+        List<BaseEntity> deptIdListArray = new ArrayList<BaseEntity>();
+        for(Integer item :deptIdList){
+           BaseEntity entity= new BaseEntity();
+           entity.setId(item);
+            deptIdListArray.add(entity);
+        }
         Res_RoleMenuTree roleMenuTree = new Res_RoleMenuTree();
         roleMenuTree.setMenuTree(sysMenuList);
-        roleMenuTree.setDataTree(deptIdList);
+        roleMenuTree.setDataTree(deptIdListArray);
         return R.ok(roleMenuTree);
     }
 
@@ -187,7 +195,7 @@ public class RoleController extends  AbstractController {
         if(roleList.size() <= 0){
             return R.failed("当前部门下不存在该角色,请先添加该角色再授权!");
         }
-        boolean r= roleMenuService.saveOrUpdateRoleMenuTree(request.roleId,request.menuIdList);
+        boolean r= roleMenuService.saveOrUpdateRoleMenuTree(request.roleId,request.menuIdList,request.deptIdList);
         if(!r){
             return R.failed("更新失败");
         }

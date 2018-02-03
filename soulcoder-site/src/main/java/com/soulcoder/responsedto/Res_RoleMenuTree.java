@@ -1,6 +1,7 @@
 package com.soulcoder.responsedto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.soulcoder.pojo.BaseEntity;
 import com.soulcoder.pojo.SysMenu;
 
 import java.util.ArrayList;
@@ -22,13 +23,7 @@ public class Res_RoleMenuTree extends  ResponseBase{
 
 
 
-    public List<Integer> getDataTree() {
-        return dataTree;
-    }
 
-    public void setDataTree(List<Integer> dataTree) {
-        this.dataTree = dataTree;
-    }
 
     /**
      * 角色对应的菜单权限列表
@@ -42,6 +37,13 @@ public class Res_RoleMenuTree extends  ResponseBase{
     * 角色对应的部门id列表数据权限
     */
     @JSONField(name="datatree")
-    private List<Integer> dataTree = new ArrayList<Integer>();
+    private List<BaseEntity> dataTree = new ArrayList<BaseEntity>();
 
+    public List<BaseEntity> getDataTree() {
+        return dataTree;
+    }
+
+    public void setDataTree(List<BaseEntity> dataTree) {
+        this.dataTree = dataTree;
+    }
 }

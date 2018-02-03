@@ -1,6 +1,7 @@
 package com.soulcoder.service.impl;
 
 import com.soulcoder.dao.SysMenuDao;
+import com.soulcoder.dao.SysRoleDeptDao;
 import com.soulcoder.dao.SysRoleMenuDao;
 import com.soulcoder.pojo.SysMenu;
 import com.soulcoder.service.IRoleMenuService;
@@ -21,6 +22,9 @@ public class RoleMenuServiceImpl implements IRoleMenuService {
 
     @Autowired
     private SysMenuDao menuDao;
+
+    @Autowired
+    private SysRoleDeptDao roleDeptDao;
     public List<SysMenu> roleMenuTree(Integer roleId) {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("roleid",roleId);
@@ -37,16 +41,24 @@ public class RoleMenuServiceImpl implements IRoleMenuService {
     * 保存或更新角色菜单树
     */
     @Transactional
-    public Boolean saveOrUpdateRoleMenuTree(Integer roleId, List<Integer> menuIdList) {
+    public Boolean saveOrUpdateRoleMenuTree(Integer roleId, List<Integer> menuIdList,List<Integer> deptIdList) {
         roleMenuDao.delete(roleId);
-        if(menuIdList.size()<=0){
-            return true;
+        roleDeptDao.delete(roleId);
+        if(menuIdList.size()>0){
+            //保存角色与菜单关系
+            Map<String, Object> map = new HashMap<String,Object>();
+            map.put("roleId", roleId);
+            map.put("menuIdList", menuIdList);
+            roleMenuDao.save(map);
         }
-        //保存角色与菜单关系
-        Map<String, Object> map = new HashMap<String,Object>();
-        map.put("roleId", roleId);
-        map.put("menuIdList", menuIdList);
-        roleMenuDao.save(map);
+        if(deptIdList.size() > 0){
+            //保存角色与部门数据权限关系
+            Map<String, Object> map = new HashMap<String,Object>();
+            map.put("roleId", roleId);
+            map.put("deptIdList", deptIdList);
+            roleDeptDao.save(map);
+        }
+
         return true;
     }
 }
