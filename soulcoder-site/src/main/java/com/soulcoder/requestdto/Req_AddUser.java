@@ -4,18 +4,51 @@
 
 package com.soulcoder.requestdto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Created by Aministrator on 2018-01-20.
  */
 public class Req_AddUser extends  RequestBase {
+    @JSONField(name = "realname")
     private String realName;
+
+    @JSONField(name = "sex")
     private Integer sex;
+    @JSONField(name = "userstatus")
     private Integer userStatus;
+    @JSONField(name = "email")
     private String email;
-    private String date;
+
+    @JSONField(name = "birthday")
+    private String birthday;
+
+    @JSONField(name = "mobile")
     private String mobile;
+
+    @JSONField(name = "deptid")
     private Integer deptId;
+
+    @JSONField(name = "roleid")
+    private Integer roleId;
+
+    @JSONField(name = "imageurl")
     private String imageUrl;
+
+    @JSONField(name = "qq")
+    private String qq;
+
+    @JSONField(name = "weixin")
+    private String weixin;
+
+    @JSONField(name = "password")
+    private String password;
+
+    @JSONField(name = "deptname")
+    private String deptName;
+
+    @JSONField(name = "rolename")
+    private String roleName;
 
     public String getRealName() {
         return realName;
@@ -49,12 +82,12 @@ public class Req_AddUser extends  RequestBase {
         this.email = email;
     }
 
-    public String getDate() {
-        return date;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setBirthday(String date) {
+        this.birthday = date;
     }
 
     public String getMobile() {
@@ -79,5 +112,53 @@ public class Req_AddUser extends  RequestBase {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(String weixin) {
+        this.weixin = weixin;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

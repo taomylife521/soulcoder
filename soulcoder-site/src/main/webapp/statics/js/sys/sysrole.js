@@ -534,6 +534,7 @@ var vm = new Vue({
             $('#myModal').modal('hide')
         },
 
+
         //获取树对象实例
         getZTreeInstance:function(treeElement){
             var ztree=null;

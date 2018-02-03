@@ -31,6 +31,7 @@ var vm = new Vue({
             deptName:'',//部门名称
             orderBy:'u.id'//orderby
         }
+
     },
     mounted: function () {//页面元素加载完毕
         this.$nextTick(this.initTable());//dom加载完毕去初始化dataTable
@@ -83,6 +84,8 @@ var vm = new Vue({
                 }
             });
         },
+
+
 
         //确认该部门
         confirmDept:function(){

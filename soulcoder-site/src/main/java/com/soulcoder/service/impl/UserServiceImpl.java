@@ -77,4 +77,8 @@ public class UserServiceImpl implements IUserService{
 	public Integer queryTotal(Map<String, Object> map) {
 		return userDao.queryTotal(map);
 	}
+
+	public void save(SysUser user) {
+		userDao.save(user);
+	}
 }

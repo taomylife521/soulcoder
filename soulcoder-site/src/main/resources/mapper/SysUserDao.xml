@@ -4,7 +4,7 @@
 <mapper namespace="com.soulcoder.dao.SysUserDao">
 
 <select id ="queryList" resultType="com.soulcoder.pojo.SysUser">
-	select u.*,(select d.`name` from sys_dept as d where isdel=0 and d.id=u.deptid) as deptName,(select r.`name` from sys_role as r where isdel=0 and r.id=u.roleid) as roleName from sys_user as u
+	select u.*,(select d.`name` from sys_dept as d where isdel=0 and d.id=u.deptid) as deptName,(select r.`rolename` from sys_role as r where isdel=0 and r.id=u.roleid) as roleName from sys_user as u
 <where>
 	u.isdel=0
 	<if test="userCreateTimeMin != null">

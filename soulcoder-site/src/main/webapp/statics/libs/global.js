@@ -28,7 +28,7 @@ var deptTreeSettings = {
         selectedMulti: false
     },
     check: {
-        enable: true
+        enable: false
     },
     data: {
         simpleData: {

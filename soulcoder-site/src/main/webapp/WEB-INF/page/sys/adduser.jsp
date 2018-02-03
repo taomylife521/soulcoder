@@ -19,7 +19,9 @@
     <link rel="stylesheet" type="text/css" href="${path}/statics/adminlte/plugins/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/demo.css">
     <link rel="stylesheet" href="${path}/statics/adminlte/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="${path}/statics/libs/vee-validate/vee-validate.css">
     <style>
+
         .file-input{
             width:100%;
         }
@@ -42,6 +44,13 @@
             border-radius: 50%;
             padding: 3px;
             border: 3px solid #d2d6de;
+        }
+
+       .form-group .fa-warning {
+            float: left;
+            margin-right: 5px;
+        /* vertical-align: middle; */
+            margin-top: 7px;
         }
     </style>
 </head>
@@ -88,7 +97,9 @@
                 <div class="col-md-4">
                      <div class="form-group">
                          <label>姓名</label>
-                        <input type="text" class="form-control"  placeholder="姓名">
+                        <input type="text"  v-validate="'required'" name="realName" :class="{'input': true, 'is-danger': errors.has('realName') }" v-model="realName" class="form-control"  placeholder="姓名">
+                         <i v-show="errors.has('realName')" class="fa fa-warning"></i>
+                         <span v-show="errors.has('realName')" class="help is-danger">{{ errors.first('realName') }}</span>
                      </div>
                 </div>
                 <div class="col-md-2">
@@ -121,14 +132,18 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="text" class="form-control"  placeholder="Email">
+                        <input type="text" v-validate="'required|email'" name="email" :class="{'input': true, 'is-danger': errors.has('email') }" class="form-control"  placeholder="Email" v-model="email">
+                        <i v-show="errors.has('email')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>手机号</label>
-                        <input type="text" class="form-control"  placeholder="手机号">
+                        <input type="text" v-validate="'required|numeric'" name="mobile" :class="{'input': true, 'is-danger': errors.has('mobile') }" v-model="mobile" class="form-control"  placeholder="手机号">
+                        <i v-show="errors.has('mobile')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('mobile')" class="help is-danger">{{ errors.first('mobile') }}</span>
                     </div>
 
 
@@ -139,13 +154,17 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>部门</label>
-                        <input type="text" class="form-control" data-toggle="modal" data-target="#myModal"  v-model="deptName" :deptId="deptId"  placeholder="部门">
+                        <input type="text" v-validate="'required'" name="deptId" :class="{'input': true, 'is-danger': errors.has('deptId') }" class="form-control" data-toggle="modal" data-target="#myModal"  v-model="deptName" :deptId="deptId"  placeholder="部门">
+                        <i v-show="errors.has('deptId')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('deptId')" class="help is-danger">{{ errors.first('deptId') }}</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>角色</label>
-                        <input type="text" class="form-control" data-toggle="modal" data-target="#myModal"  v-model="deptName" :deptId="deptId"  placeholder="部门">
+                        <input type="text" class="form-control" v-validate="'required'" name="roleId" :class="{'input': true, 'is-danger': errors.has('roleId') }" data-toggle="modal" data-target="#roleModal"  v-model="roleName" :roleId="roleId"  placeholder="角色">
+                        <i v-show="errors.has('roleId')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('roleId')" class="help is-danger">{{ errors.first('roleId') }}</span>
                     </div>
                 </div>
 
@@ -158,16 +177,26 @@
                         <label>出生日期</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="text" class="form-control"  data-format="yyyy-mm-dd" id="datepicker" placeholder="出生日期">
+                            <input type="text"  v-validate="'date_format:{yyyy-MM-dd}'" name="birthday" :class="{'input': true, 'is-danger': errors.has('birthday') }" class="form-control"  data-format="yyyy-mm-dd" id="datepicker" v-model="birthday" placeholder="出生日期">
+                            <i v-show="errors.has('birthday')" class="fa fa-warning"></i>
+                            <span v-show="errors.has('birthday')" class="help is-danger">{{ errors.first('birthday') }}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>QQ</label>
-                        <input type="text" class="form-control"   v-model="deptName" :deptId="deptId"  placeholder="QQ">
+                        <input type="text" v-validate="'numeric'" name="qq" :class="{'input': true, 'is-danger': errors.has('qq') }" class="form-control"   v-model="qq"   placeholder="QQ号">
+                        <i v-show="errors.has('qq')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('qq')" class="help is-danger">{{ errors.first('birthday') }}</span>
                     </div>
                     <div class="form-group">
                         <label>微信号</label>
-                        <input type="text" class="form-control"   v-model="deptName" :deptId="deptId"  placeholder="QQ">
+                        <input type="text" class="form-control"  name="weixin"  v-model="weixin"   placeholder="微信号">
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" v-validate="'required'" name="password" :class="{'input': true, 'is-danger': errors.has('password') }" class="form-control"   v-model="qq"   placeholder="密码">
+                        <i v-show="errors.has('password')" class="fa fa-warning"></i>
+                        <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
                     </div>
                 </div>
                 <div class="col-md-4 center">
@@ -211,6 +240,28 @@
             </div>
         </div>
     </div>
+
+    <!--角色树弹框-->
+    <div class="modal fade" id="roleModal" style="display: none" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="roleModalLabel">部门列表</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 部门列表 -->
+                    <div class="zTreeDemoBackground">
+                        <ul id="roleDeptTree" style="width: auto;" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="confirmDeptRole" >确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
@@ -223,5 +274,7 @@
 <script src="${path}/statics/adminlte/plugins/bootstrap-fileinput/js/plugins/piexif.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/bootstrap-fileinput/js/zh.js"></script>
+<script src="${path}/statics/libs/vee-validate/vee-validate.js"></script>
+<script src="${path}/statics/libs/vee-validate/locale/zh_CN.js"></script><!--该js必须在vee-validate.js后面-->
 
 <script src="${path}/statics/js/sys/adduser.js?time=New Date()"></script>

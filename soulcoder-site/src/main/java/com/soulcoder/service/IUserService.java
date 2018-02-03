@@ -49,4 +49,9 @@ public interface IUserService {
      * */
    Integer queryTotal(Map<String, Object> map);
 
+    /**
+     * 查询总数
+     * */
+    void save(SysUser user);
+
 }

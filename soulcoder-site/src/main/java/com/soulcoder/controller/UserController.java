@@ -12,6 +12,7 @@ import com.soulcoder.responsedto.PageInfoResponseBase;
 import com.soulcoder.responsedto.R;
 import com.soulcoder.responsedto.Res_UserList;
 import com.soulcoder.service.IUserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +47,8 @@ public class UserController extends AbstractController {
 
 	@RequestMapping("/list")
 	@ResponseBody
-	public R list(@RequestBody Req_UserList request){//, BindingResult bindingResult
+	public R list(@RequestBody Req_UserList request){
+		//, BindingResult bindingResult
 //		if(bindingResult.hasErrors()){
 //			List<ObjectError> objectErrorList= bindingResult.getAllErrors();
 //			// String.join(",",objectErrorList.toArray());//	objectErrorList.toArray();
@@ -137,11 +142,36 @@ public class UserController extends AbstractController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value="add",method = RequestMethod.POST)
+	@RequestMapping(value="save",method = RequestMethod.POST)
 	@ResponseBody
-	public String addUser(Req_AddUser request)
-	{
-		return "sys/adduser";
+	public R save(@RequestBody Req_AddUser request) throws ParseException {
+		R res=ValidatorUtils.validateEntity(request);
+		if(res.getStatus() != ResponseStatus.Success.getIndex())
+		{
+			return res;
+		}
+        Date date = new Date();
+//sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+
+		SysUser user = new SysUser();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		user.setBithday(df.parse(request.getBirthday()));
+		user.setCreateby(request.loginId);
+		user.setCreatetime(date);
+		user.setDeptid(request.getDeptId());
+		user.setDeptName(request.getDeptName());
+		user.setEmail(request.getEmail());
+		user.setIsdel(0);
+		user.setMobile(request.getMobile());
+		user.setPassword(request.getPassword());
+		user.setQq(request.getQq());
+		user.setRealname(request.getRealName());
+		user.setRoleid(request.getRoleId());
+        user.setSalt(salt);
+        user.setPassword(ShiroUtils.sha256(request.getPassword(), salt));
+		userService.save(user);
+		return R.ok();
 	}
 	
 }

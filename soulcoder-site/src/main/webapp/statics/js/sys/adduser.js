@@ -1,36 +1,66 @@
 /*
  * Copyright (c) 2018.所有代码版权归编码者所有!
  */
-
+Vue.use(VeeValidate); // good to go.
 /**
  * Created by Aministrator on 2018-01-20.
  */
 /*ztree的设置*/
-var ztree;
+//var ztree;
 var vm = new Vue({
    el:"#addUserBox",
     data:{
         imgurl:',//头像地址' ,
-        realname:'',
+        realName:'',
+        weixin:'',
+        qq:'',
         sex:'',
         email:'',
         birthday:'',
         mobile:'',
         deptName:'',
-        deptId:''
+        deptId:'',
+        roleId:'',
+        roleName:'',
+        password:'',
+        roleTreeSettings : {
+            view: {
+                selectedMulti: false,
+                view: {
+                    fontCss: {}
+                }
+            },
+            check: {
+                enable: false
+            },
+
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "parentid",//父id对应的键
+                    rootPId: 0
+                }
+            },
+            edit: {
+                enable: false
+            },
+            callback: {
+                onClick: null
+            }
+        },
+        ztrees:[],//多个ztree映射关系表
     },
     created:function(){
         $('#datepicker').datepicker({
             autoclose: true
         });
-        this.loadDeptList();//载入部门列表
+        this.loadRoleTreeList(false);
+        this.$validator.localize('zh_CN');
     },
     mounted:function(){
         this.$nextTick(
-            // $("#btnUploadImage").fileinput({
-            //     uploadUrl: "/file-upload-single/1",
-            //     maxFileCount: 5
-            // })
+
             $("#btnUploadImage").fileinput({
                 theme: 'fa',
                 showCaption:true,//是否显示文件标题
@@ -66,40 +96,158 @@ var vm = new Vue({
         );
     },
     methods:{
-            switchChange:function(){
-                swal("aa");
-                $("#toggle-state-switch").bootstrapSwitch();
-            },
-        //载入部门列表
-        loadDeptList:function(){
+
+
+        //载入角色树
+        loadRoleTreeList: function (isOnlyInitRoleTree) {
+            //  var data="rolename="+vm.sRoleName+"&deptid="+vm.sRoleDeptId;
             $.ajax({
-                type:"POST",
-                url:"/sys/dept/list",
-                dataType:"json",
-                success:function (result) {
-                    if(result.status == 0){
-                       swal("获取部门失败:"+result);
-                        return;
+                type: "POST",
+                url: "/sys/role/list",
+                dataType: "json",
+                // data:data,
+                success: function (result) {
+                    if(!vm.ajaxCallInterceptor(result)){
+                        return false;
                     }
-                    ztree= $.fn.zTree.init($("#deptTree"), deptTreeSettings, result.data.deptlist);
-                    var node = ztree.getNodeByParam("id", parent.vm.user.deptid);//根据父框架vm的user对象去查值
-                    if(node != null){//如果节点不为空则选中
-                        ztree.selectNode(node);
+
+                    vm.roleTreeSettings.callback.onClick=vm.clickRoleTree;
+                    vm.roleTreeSettings.view.fontCss=vm.getFontCss;
+                    vm.initTree("roleDeptTree",result.data.rolelist,parent.vm.user.deptid,vm.roleTreeSettings,true);
+                    if(!isOnlyInitRoleTree) {
+                        for (var key = 0; key < result.data.rolelist.length; key++) {//去除所有的角色只留部门
+                            if (result.data.rolelist[key].role == true) {
+                                result.data.rolelist.splice(key, 1);
+                                key -= 1;
+                            }
+                        }
+                        vm.initTree("deptTree", result.data.rolelist, parent.vm.user.deptid, deptTreeSettings,true);
                     }
+
+
+
+
                 }
             });
         },
-        //确认该部门
-        confirmDept:function(){
-            var node = ztree.getSelectedNodes();//获取选中的节点赋值到文本框中
-            //选择上级部门
-            vm.deptId = node[0].id;
-            vm.deptName = node[0].name;
-            $('#myModal').modal('hide')
+
+        //初始化部门树
+        initTree:function(treeElementId,treeData,selectedDeptId,settings,isCacheZTreeInstance){
+            var ztree = $.fn.zTree.init($("#"+treeElementId), settings, treeData);
+            var nodes= ztree.getNodes();
+            for(var i=0;i<nodes.length;i++){
+                nodes[i].highlight=false;
+                var isleaf = nodes[i].isleaf==0 || nodes[i].isleaf=="false"?false:true
+                if(nodes[i].isopen && !isleaf){
+                    ztree.expandNode(nodes[i], true, true, true);
+                }else{
+                    ztree.expandNode(nodes[i], false, false, false);
+                }
+                // nodes[i].open=nodes[i].isopen?true:false;
+            }
+            var node = ztree.getNodeByParam("id", selectedDeptId);//根据参数查询节点
+            if (node != null) {//如果节点不为空则选中
+                ztree.selectNode(node);
+                node.highlight=true;
+                ztree.updateNode(node);
+            }
+            if(isCacheZTreeInstance) {
+                vm.ztrees.push({id: treeElementId, instance: ztree});//缓存树的映射关系
+            }
         },
+
+        //获取树对象实例
+        getZTreeInstance:function(treeElement){
+            var ztree=null;
+            $.each(vm.ztrees,function(i){
+                if(vm.ztrees[i].id == treeElement){
+                    ztree= vm.ztrees[i].instance;
+                }
+            });
+            return ztree;
+        },
+
+        //选择部门
+        confirmDept:function(){
+            var ztree= vm.getZTreeInstance("deptTree");
+            var node = ztree.getSelectedNodes();//获取选中的节点赋值到文本框中
+            if(node!=null) {
+                //选择上级部门
+                vm.deptId = node[0].id;
+                vm.deptName = node[0].name;
+                $('#myModal').modal('hide')
+            }else{
+                swal("未选择任何部门");
+            }
+        },
+
+        //选择部门角色
+        confirmDeptRole:function(){
+            var ztree= vm.getZTreeInstance("roleDeptTree");
+            var node = ztree.getSelectedNodes();//获取选中的节点赋值到文本框中
+            if(node==null || !node[0].role) {
+                swal("未选择任何角色");
+                return;
+            }
+
+
+            vm.roleId = node[0].id;
+            vm.roleName = node[0].name;
+            $('#roleModal').modal('hide')
+        },
+
         //添加用户
         btnAddUser:function(){
-            swal('add user');
+            this.$validator.validateAll().then(function(result){ //提交之前验证所有的错误
+                if (!result) {
+                    return false; //验证不通过
+                }
+                // 验证通过
+                // 验证通过
+                var data={
+                    user: {
+                        realName: vm.realName,
+                        sex: vm.sex,
+                        userStatus: vm.userStatus,
+                        email: vm.email,
+                        birthday: vm.birthday,
+                        mobile:vm.mobile,
+                        deptId:vm.deptId,
+                        roleId:vm.roleId,
+                        imageUrl:vm.imgurl,
+                        qq:vm.qq,
+                        weixin:vm.weixin,
+                        password:vm.password
+                    }
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/sys/role/save",
+                    dataType: "json",
+                    data:JSON.stringify(data),
+                    contentType:'application/json;charset=UTF-8',
+                    success: function (result) {
+                        if(!vm.ajaxCallInterceptor(result)){
+                            vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                            vm.selectedTreeNode("roleDeptTree","name",vm.roleName);
+                            return false;
+                        }
+                        // if (parseInt(result.status) == 0) {
+                        //     swal(result.errormsg);
+                        //     vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                        //     vm.selectedTreeNode("roleDeptTree","name",vm.roleName);
+                        //     return;
+                        // }
+
+
+                        //vm.loadRoleTreeList(true);
+                        //vm.selectedTreeNode("roleDeptTree","parentid",vm.roleDeptId);//角色信息展示中的部门树默认选中
+                        swal("添加成功");
+                        window.location.reload();
+                    }
+                });
+
+            });
         }
     }
 });

@@ -24,7 +24,7 @@ public class SysUser extends BaseEntity {
     private Integer sex;
     private Date bithday;
 
-    private Integer createby;
+    private transient Integer createby;
 
     private transient Integer isdel;
 
@@ -65,17 +65,17 @@ public class SysUser extends BaseEntity {
         this.roleid = roleid;
     }
 
-    public Integer getRolename() {
+    public String getRolename() {
         return rolename;
     }
 
-    public void setRolename(Integer rolename) {
+    public void setRolename(String rolename) {
         this.rolename = rolename;
     }
 
     private Integer roleid;
 
-    private Integer rolename;
+    private String rolename;
 
     public String getEmail() {
         return email;
