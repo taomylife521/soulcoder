@@ -107,6 +107,7 @@
 
         <div class="box-footer">
             <a href="/sys/user/add" class="btn margin-r-5 btn-info pull-right" >新增</a>
+            <button type="button" class="btn margin-r-5 btn-info pull-right" @click="editUser">编辑</button>
             <button type="button" class="btn margin-r-5 btn-primary pull-right" @click="loadUserList">查询</button>
         </div>
 
@@ -120,11 +121,12 @@
                     <div class="box-header">
                         <h3 class="box-title">用户展示列表</h3>
                     </div>
-                    <!-- /.box-header -->
+                    <!-- /.box-header stripe   row-border order-column nowrap-->
                     <div class="box-body">
-                        <table id="tbUserList" class="table table-bordered table-striped">
+                        <table id="tbUserList" class="table table-bordered table-striped" style="width:100%">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>用户编号</th>
                                 <th>用户名</th>
                                 <th>姓名</th>

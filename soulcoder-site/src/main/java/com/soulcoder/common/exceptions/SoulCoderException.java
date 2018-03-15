@@ -12,6 +12,8 @@ public class SoulCoderException extends Exception {
 
     //异常消息
     public String message;
+    ThreadLocal<String> local = new ThreadLocal<String>();
+
 
     public SoulCoderException(String message) {
         super(message);

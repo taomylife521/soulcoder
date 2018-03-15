@@ -47,7 +47,7 @@ public class SysUser extends BaseEntity {
     /**
      * 部门名称
      */
-    private String deptName;
+    private String deptname;
 
     public Integer getCreateby() {
         return createby;
@@ -129,11 +129,11 @@ public class SysUser extends BaseEntity {
 //    }
 
     public String getDeptName() {
-        return deptName;
+        return deptname;
     }
 
     public void setDeptName(String deptName) {
-        this.deptName = deptName;
+        this.deptname = deptName;
     }
 
 

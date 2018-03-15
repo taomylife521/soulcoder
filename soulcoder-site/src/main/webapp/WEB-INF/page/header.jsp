@@ -35,6 +35,8 @@
 <link href="${path}/statics/adminlte/plugins/iCheck/all.css" rel="stylesheet" />
 <link href="${path}/statics/adminlte/plugins/select2/select2.min.css" rel="stylesheet" />
 <link href="${path}/statics/adminlte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+<link href="${path}/statics/adminlte/plugins/datatables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css"/>
+<link href="${path}/statics/adminlte/plugins/datatables/extensions/Select/css/select.dataTables.min.css" rel="stylesheet" />
 <%--<link href="${path}/statics/adminlte/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />--%>
 
 <style>

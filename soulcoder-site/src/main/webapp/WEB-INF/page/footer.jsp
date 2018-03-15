@@ -5,6 +5,7 @@
 <script type="text/javascript" src="${path}/statics/adminlte/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${path}/statics/libs/vue.min.js"></script>
 <script type="text/javascript" src="${path}/statics/libs/global.js"></script>
+<%--<script type="text/javascript" src="${path}/statics/libs/jquery-1.12.4.js"></script>--%>
 
 <%--<link rel="stylesheet" type="text/css" href="${path}/statics/adminlte/plugins/sweetalert/sweetalert.min.js">--%>
 
@@ -22,13 +23,19 @@
 <script src="${path}/statics/adminlte/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="${path}/statics/adminlte/plugins/fastclick/fastclick.min.js"></script>
-<!-- AdminLTE App -->
-<script src="${path}/statics/adminlte/dist/js/app.min.js"></script>
+
 <!-- SlimScroll 1.3.0 -->
 <script src="${path}/statics/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
+
 <script src="${path}/statics/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="${path}/statics/adminlte/plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+<script src="${path}/statics/adminlte/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
 <script src="${path}/statics/adminlte/plugins/tooltips/tipso.js"></script>
+<!-- AdminLTE App -->
+<script src="${path}/statics/adminlte/dist/js/app.min.js"></script>
+
 <%--<link href="${path}/statics/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js" rel="stylesheet" />--%>
 <script>
 

@@ -59,10 +59,15 @@ var vm = new Vue({
         addNewUser:function () {
             swal("add");
         },
+        //编辑用户
+        editUser:function(){
+          swal("编辑用户");
+        },
         //载入用户列表
         loadUserList:function(){
             tbl.ajax.reload();
         },
+
 
         //载入部门列表
         loadDeptList:function(){
@@ -85,8 +90,6 @@ var vm = new Vue({
             });
         },
 
-
-
         //确认该部门
         confirmDept:function(){
             var node = ztree.getSelectedNodes();//获取选中的节点赋值到文本框中
@@ -102,17 +105,29 @@ var vm = new Vue({
             var userCreateTimeMin=vmData.sCondition.createTime.split('/')[0];
             var userCreateTimeMax=vmData.sCondition.createTime.split('/')[1];
             tbl= $('#tbUserList').DataTable({
-                    "paging": true,
-                    "lengthChange": true,
-                    "lengthMenu": [10, 25, 50],
-                    "searching": false,//是否允许Datatables开启本地搜索
-                    "ordering": false,//是否允许Datatables开启排序
-                    "info": true,//控制是否显示表格左下角的信息
-                    "autoWidth": true,//自动宽度
-                    "language": oLanguageData,//语言文件
-                    "processing": true,//有ajax，此项必有
-                    "serverSide": true,//有serverSide，ajax项必有
-                    "ajax":{//ajax所需参数
+                    paging: true,
+                    lengthChange: true,
+                    lengthMenu: [10, 25, 50],
+                    searching: false,//是否允许Datatables开启本地搜索
+                    ordering: false,//是否允许Datatables开启排序
+                    info: true,//控制是否显示表格左下角的信息
+                    autoWidth: true,//自动宽度
+                    language: oLanguageData,//语言文件
+                    processing: true,//有ajax，此项必有
+                    serverSide: true,//有serverSide，ajax项必有
+                    fixedColumns:   {
+                            leftColumns: 1
+                        },//固定的列为左边1列
+                    columnDefs: [ {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets:   0 //0代表第一列， -1代表最后一列
+                    } ],
+                    select: {
+                        style:    'os',
+                        selector: 'td:first-child'
+                    },
+                    ajax:{//ajax所需参数
                         url: "list",
                         contentType: "application/json",//
                         type:"POST",
@@ -141,7 +156,11 @@ var vm = new Vue({
                             return JSON.stringify(tableJson); // return JSON string
                         }
                 },
-                "columns": [
+                columns: [
+                    {
+                        "data": "", // can be null or undefined
+                        "defaultContent": ""
+                    },
                     { "data": "id" },
                     { "data": "username" },
                     { "data": "realname" },

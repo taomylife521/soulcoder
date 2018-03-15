@@ -4,7 +4,8 @@
 
 package com.soulcoder;
 
-import com.soulcoder.partener.shiro.ShiroUtils;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Aministrator on 2018-01-15.
@@ -12,7 +13,35 @@ import com.soulcoder.partener.shiro.ShiroUtils;
  */
 public class AppStart {
    public static void main(String[] args) {
-       System.out.println(ShiroUtils.sha256("admin","MTIzNDU2"));
+      // System.out.println(ShiroUtils.sha256("admin","MTIzNDU2"));
+//       HashMap<String,Object> map = new HashMap<String, Object>();
+//       for(int i=0;i<18;i++){
+//           if(i==11){
+//               System.out.println("rehash");
+//           }
+//           map.put(String.valueOf(i),i);
+//       }
+//       System.out.println(map);
+       //String a ="1";
+      // String a= new String("a");
+      // String a = "ab";
+       //int hashc=a.hashCode();
+
+     ExecutorService executorService= Executors.newCachedThreadPool();
+     executorService.execute(new Runnable() {
+         public void run() {
+             System.out.println("i execute");
+         }
+     });
+       System.out.println("ok");
+      // Thread.getDefaultUncaughtExceptionHandler().uncaughtException(thread,new Throwable("exception"));
+//       ConcurrentHashMap<String,Object> concurrentMap = new ConcurrentHashMap<String, Object>();
+//       concurrentMap.put("1","a");
+//       concurrentMap.put("2","a");
+//       map.put("1","a");
+//       map.put("1","b");
+//      Object obj= map.get("1");
+//       map.put("2","c");
 //        String srcDir = "D:\\test Project\\ND.JavaProject\\soulcoder\\src";
 //        List<String> fileList = new ArrayList<String>();
 //        fetchFileList(srcDir,fileList,".java");
